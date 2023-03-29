@@ -50,7 +50,13 @@ set     TECHNOLOGY      /
         RHu 'Residential heating - Unmet demand'
         RLu 'Residential lighting - Unmet demand'
         TXu 'Personal transport - Unmet demand'
+* new technologies
+        SPP 'Solar power plants'
+        WPP 'Wind power plants'
+        SUN 'Energy input from the sun'
+        WIN 'Energy input from the wind'
 /;
+
 set     TIMESLICE       /
         ID 'Intermediate - day'
         IN 'Intermediate - night'
@@ -59,6 +65,7 @@ set     TIMESLICE       /
         WD 'Winter - day'
         WN 'Winter - night'
 /;
+
 set     FUEL    /
         DSL 'Diesel'
         ELC 'Electricity'
@@ -70,7 +77,11 @@ set     FUEL    /
         RH 'Demand for residential heating'
         RL 'Demand for residential lighting'
         TX 'Demand for personal transport'
+* new fuels 
+        SOL 'Solar'
+        WND 'Wind'
 /;
+
 set     EMISSION        / CO2, NOX /;
 set     MODE_OF_OPERATION       / 1, 2 /;
 set     REGION  / UTOPIA /;
@@ -79,6 +90,23 @@ set     DAYTYPE / 1 /;
 set     DAILYTIMEBRACKET / 1, 2 /;
 set     STORAGE / DAM /;
 
+# characterize technologies 
+set power_plants(TECHNOLOGY) / E01, E21, E31, E51, E70, SPP, WPP /;
+set fuel_transformation(TECHNOLOGY) / SRE /;
+set appliances(TECHNOLOGY) / RHE, RHO, RL1, TXD, TXE, TXG /;
+set unmet_demand(TECHNOLOGY) / RHu, RLu, TXu /;
+set transport(TECHNOLOGY) / TXD, TXE, TXG /;
+set primary_imports(TECHNOLOGY) / IMPHCO1, IMPOIL1, IMPURN1 /;
+set secondary_imports(TECHNOLOGY) / IMPDSL1, IMPGSL1 /;
+
+set fuel_production(TECHNOLOGY);
+set fuel_production_fict(TECHNOLOGY) /RIV, SUN, WIN/;
+set secondary_production(TECHNOLOGY) /E01, E21, E31, E51, E70, SPP, WPP, SRE/;
+
+#Characterize fuels 
+set primary_fuel(FUEL) / HCO, OIL, URN, HYD, SOL, WND /;
+set secondary_carrier(FUEL) / DSL, GSL, ELC /;
+set final_demand(FUEL) / RH, RL, TX /;
 
 
 *------------------------------------------------------------------------	
@@ -226,13 +254,8 @@ parameter AccumulatedAnnualDemand(r,f,y) /
 * Parameters - Performance       
 *------------------------------------------------------------------------
 
-parameter CapacityToActivityUnit(r,t) /
-  UTOPIA.E01  31.536
-  UTOPIA.E21  31.536
-  UTOPIA.E31  31.536
-  UTOPIA.E51  31.536
-  UTOPIA.E70  31.536
-/;
+CapacityToActivityUnit(r,t)$power_plants(t) = 31.536;
+
 CapacityToActivityUnit(r,t)$(CapacityToActivityUnit(r,t) = 0) = 1;
 
 CapacityFactor(r,'E01',l,y) = 0.8;
@@ -374,7 +397,7 @@ parameter ResidualCapacity(r,t,y) /
 
 parameter InputActivityRatio(r,t,f,m,y) /
   UTOPIA.E01.HCO.1.(1990*2010)  3.125
-  UTOPIA.E21.URN.1.(1990*2010)  1
+  UTOPIA.E21.URN.1.(1990*2010)  3.5
   UTOPIA.E31.HYD.1.(1990*2010)  3.125
   UTOPIA.E51.ELC.2.(1990*2010)  1.3889
   UTOPIA.E70.DSL.1.(1990*2010)  3.4
@@ -412,6 +435,9 @@ parameter OutputActivityRatio(r,t,f,m,y) /
   UTOPIA.TXU.TX.1.(1990*2010)  1
 /;
 
+# By default, assume for imported secondary fuels the same efficiency of the internal refineries
+InputActivityRatio(r,'IMPDSL1','OIL',m,y)$(not OutputActivityRatio(r,'SRE','DSL',m,y) eq 0) = 1/OutputActivityRatio(r,'SRE','DSL',m,y); 
+InputActivityRatio(r,'IMPGSL1','OIL',m,y)$(not OutputActivityRatio(r,'SRE','GSL',m,y) eq 0) = 1/OutputActivityRatio(r,'SRE','GSL',m,y); 
 
 *------------------------------------------------------------------------	
 * Parameters - Technology costs       

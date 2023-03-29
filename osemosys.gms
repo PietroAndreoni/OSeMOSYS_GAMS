@@ -21,10 +21,13 @@
 * 5. Some results are created in file SelResults.CSV that you can view in Excel.
 *
 * declarations for sets, parameters, variables
+$eolcom #
 $offlisting
+$if not set scen $setglobal scen base
 $include osemosys_dec.gms
 * specify Utopia Model data
-$include utopia_data.txt
+$include utopia_data.gms
+$include renewables_data.gms
 * define model equations
 $offlisting
 $include osemosys_equ.gms
