@@ -31,6 +31,23 @@ $include renewables_data.gms
 * define model equations
 $offlisting
 $include osemosys_equ.gms
+
+* some scenario flags
+$ifthen.scen set ren_target
+TotalREProductionAnnual(r,t,y) = %ren_target%/100 * sum(final_demand(f), AccumulatedAnnualDemand(r,f,y) + SpecifiedAnnualDemand(r,f,y));
+$setglobal scen "rentarget%ren_target%"
+$endif.scen
+
+$ifthen.scen set ctax 
+EmissionsPenalty(r,'CO2',y) = %ctax%*(1 + 0.05**(y.val-1990));
+$setglobal scen "ctax%ctax%"
+$endif.scen
+
+$ifthen.scen set emicap 
+AnnualEmissionLimit(r,'CO2',y)$(ord(y) ge 10) = %emicap%;
+$setglobal scen "emicap%emicap%"
+$endif.scen
+
 * solve the model
 model osemosys /all/;
 option limrow=0, limcol=0, solprint=on;
@@ -38,5 +55,5 @@ option mip = copt;
 solve osemosys minimizing z using mip;
 * create results in file SelResults.CSV
 $include osemosys_res.gms
-
+$include report.gms
 execute_unload 'results_%scen%.gdx';

@@ -1,4 +1,5 @@
-set res(TECHNOLOGY) /SPP,WPP/; 
+set t_res(TECHNOLOGY) /SPP,WPP,E31/; 
+set f_res(FUEL) /SOL,WND/; 
 
 # Characterize SOLAR technology
 OperationalLife(r,'SPP') = 15;
@@ -39,3 +40,5 @@ VariableCost(r,'WPP',m,y) = 1e-5;
 FixedCost(r,'WPP',y) = 7;
 
 #ReserveMarginTagTechnology(r,t,y)$res(t) = 1;
+RETagTechnology(r,t,y)$t_res(t) = 1;
+RETagFuel(r,f,y)$f_res(f) = 1;
