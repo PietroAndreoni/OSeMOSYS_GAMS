@@ -3,7 +3,6 @@ set ftm_elec(f,t,m);
 set t_feeding_demand_f_using_ff(t,f,ff,m);
  
 parameter rep_fen_tot(*,r,y) 'PJ/yr';
-parameter rep_fen_share(*,r,f,y) '%';
 parameter rep_pes_tot(*,r,y) 'PJ/yr';
 parameter rep_pes_share(*,r,f,y) '%';
 parameter rep_elec_tot(*,r,y) 'PJ/yr';
@@ -36,16 +35,6 @@ $gdxin
 rep_fen_tot('%scen%',r,y) = sum(final_demand(f), AccumulatedAnnualDemand(r,f,y) + SpecifiedAnnualDemand(r,f,y));
 
 *------------------------------------------------------------------------	
-*    - share of final energy end uses [%]       
-*------------------------------------------------------------------------
-
-* For each energy service f, calculate the share between its demand and
-* the total.
-rep_fen_share('%scen%',r,f,y)$final_demand(f) = 100.*(AccumulatedAnnualDemand(r,f,y) + SpecifiedAnnualDemand(r,f,y))/rep_fen_tot('%scen%',r,y);
-display rep_fen_share;
-
-
-*------------------------------------------------------------------------	
 *    - total primary energy supply [PJ/yr]       
 *------------------------------------------------------------------------
 
@@ -54,16 +43,12 @@ display rep_fen_share;
 * heating or to produce electricity, i.e. the primary_fuel set.
 
 rep_pes_tot('%scen%',r,y) = sum(primary_fuel(f), ProductionAnnual.L(r,f,y));
-display rep_pes_tot;
-
 
 *------------------------------------------------------------------------	
 *    - share of primary energy sources [%]       
 *------------------------------------------------------------------------
 
 rep_pes_share('%scen%',r,f,y)$primary_fuel(f) = 100.*ProductionAnnual.L(r,f,y)/rep_pes_tot('%scen%',r,y);
-display rep_pes_share;
-
 
 *------------------------------------------------------------------------	
 *    - total electricity production [PJ/yr]       
@@ -79,7 +64,6 @@ ftm_elec(f,t,m) = yes$(sum((r,y)$(primary_fuel(f) and InputActivityRatio(r,t,f,m
 * by technology, e.g. RateOfProductionByTechnologyByMode.
 rep_elec_tot('%scen%',r,y) = sum((f,t,m,l)$ftm_elec(f,t,m),
     RateOfProductionByTechnologyByMode.l(r,l,t,m,'ELC',y)*YearSplit(l,y));
-display rep_elec_tot;
 
 
 *------------------------------------------------------------------------	
@@ -88,8 +72,6 @@ display rep_elec_tot;
 
 rep_elec_share('%scen%',r,f,y)$primary_fuel(f) = 100.*sum((t,m,l)$ftm_elec(f,t,m),
     RateOfProductionByTechnologyByMode.l(r,l,t,m,'ELC',y)*YearSplit(l,y))/rep_elec_tot('%scen%',r,y);
-display rep_elec_share;
-
 
 *------------------------------------------------------------------------	
 *    - total capacity for electricity production [GW]       
@@ -139,8 +121,6 @@ rep_co2emiss_tot('%scen%',r,y) = AnnualEmissions.l(r,'co2',y) + AnnualExogenousE
 
 rep_co2emiss_by_fuel('%scen%',r,f,y) = sum((t,m)$(OutputActivityRatio(r,t,f,m,y) and EmissionActivityRatio(r,t,'co2',m,y)), EmissionActivityRatio(r,t,'co2',m,y)*ProductionByTechnologyAnnual.l(r,t,f,y));
 
-
-
 *------------------------------------------------------------------------	
 *   - cost wrt base case
 *------------------------------------------------------------------------
@@ -150,7 +130,6 @@ rep_cost_wrt_base('%scen%',r) = 100*(ModelPeriodCostByRegion.l(r)/cost_base.l(r)
 
 execute_unload 'report_%scen%.gdx',
 rep_fen_tot
-rep_fen_share
 rep_pes_tot
 rep_pes_share
 rep_elec_tot

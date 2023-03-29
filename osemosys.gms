@@ -34,18 +34,30 @@ $include osemosys_equ.gms
 
 * some scenario flags
 $ifthen.scen set ren_target
-TotalREProductionAnnual(r,t,y) = %ren_target%/100 * sum(final_demand(f), AccumulatedAnnualDemand(r,f,y) + SpecifiedAnnualDemand(r,f,y));
+equation my_RE4_EnergyConstraint(REGION,YEAR);
+my_RE4_EnergyConstraint(r,y)..
+    %ren_target%/100*(sum(f, AccumulatedAnnualDemand(r,f,y) + SpecifiedAnnualDemand(r,f,y))) =l= TotalREProductionAnnual(r,y);
 $setglobal scen "rentarget%ren_target%"
 $endif.scen
 
 $ifthen.scen set ctax 
-EmissionsPenalty(r,'CO2',y) = %ctax%*(1 + 0.05**(y.val-1990));
+EmissionsPenalty(r,'CO2',y) = %ctax%;
 $setglobal scen "ctax%ctax%"
 $endif.scen
 
 $ifthen.scen set emicap 
 AnnualEmissionLimit(r,'CO2',y)$(ord(y) ge 10) = %emicap%;
 $setglobal scen "emicap%emicap%"
+$endif.scen
+
+$ifthen.scen set nocoal 
+TotalAnnualMaxCapacity(r,'E01',y) = .5;
+$setglobal scen "nocoal"
+$endif.scen
+
+$ifthen.scen set cost_res 
+CapitalCost(r,t,y)$t_res(t) = %cost_res%/100 * CapitalCost(r,t,y);
+$setglobal scen "lowcost"
 $endif.scen
 
 * solve the model

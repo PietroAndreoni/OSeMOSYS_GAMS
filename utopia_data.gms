@@ -91,7 +91,8 @@ set     DAILYTIMEBRACKET / 1, 2 /;
 set     STORAGE / DAM /;
 
 # characterize technologies 
-set power_plants(TECHNOLOGY) / E01, E21, E31, E51, E70, SPP, WPP /;
+set power_plants(TECHNOLOGY) / E01, E21, E31, E70, SPP, WPP /;
+set storage_plants(TECHNOLOGY) / E51 /;
 set fuel_transformation(TECHNOLOGY) / SRE /;
 set appliances(TECHNOLOGY) / RHE, RHO, RL1, TXD, TXE, TXG /;
 set unmet_demand(TECHNOLOGY) / RHu, RLu, TXu /;
@@ -661,15 +662,6 @@ parameter TotalAnnualMaxCapacity /
 TotalAnnualMaxCapacity(r,t,y)$(TotalAnnualMaxCapacity(r,t,y) = 0) = 99999;
 TotalAnnualMaxCapacity(r,'TXE','1990') = 0;
 TotalAnnualMaxCapacity(r,'RHE','1990') = 0;
-TotalAnnualMaxCapacity(r,'RHE','1991') = 0;
-TotalAnnualMaxCapacity(r,'RHE','1992') = 0;
-TotalAnnualMaxCapacity(r,'RHE','1993') = 0;
-TotalAnnualMaxCapacity(r,'RHE','1994') = 0;
-TotalAnnualMaxCapacity(r,'RHE','1995') = 0;
-TotalAnnualMaxCapacity(r,'RHE','1996') = 0;
-TotalAnnualMaxCapacity(r,'RHE','1997') = 0;
-TotalAnnualMaxCapacity(r,'RHE','1998') = 0;
-TotalAnnualMaxCapacity(r,'RHE','1999') = 0;
 
 parameter TotalAnnualMinCapacity(r,t,y) /
   UTOPIA.E31.1990  .13
