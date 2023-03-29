@@ -1,6 +1,6 @@
 *
 * OSEMOSYS 2011.07.07 conversion to GAMS by Ken Noble, Noble-Soft Systems - August 2012
-* OSEMOSYS 2017.11.08 update by Thorsten Burandt, Konstantin Löffler and Karlo Hainsch, TU Berlin (Workgroup for Infrastructure Policy) - October 2017
+* OSEMOSYS 2017.11.08 update by Thorsten Burandt, Konstantin Lï¿½ffler and Karlo Hainsch, TU Berlin (Workgroup for Infrastructure Policy) - October 2017
 *
 * Files required are:
 * osemosys.gms (this file)
@@ -31,6 +31,9 @@ $include osemosys_equ.gms
 * solve the model
 model osemosys /all/;
 option limrow=0, limcol=0, solprint=on;
-solve osemosys minimizing z using MIP;
+option mip = copt;
+solve osemosys minimizing z using mip;
 * create results in file SelResults.CSV
 $include osemosys_res.gms
+
+execute_unload 'results_%scen%.gdx';
