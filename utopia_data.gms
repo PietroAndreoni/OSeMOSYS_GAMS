@@ -24,16 +24,15 @@ $offlisting
 *------------------------------------------------------------------------	
 * Sets       
 *------------------------------------------------------------------------
-
-
 $offlisting
+
 set     YEAR    / 1990*2010 /;
 set     TECHNOLOGY      /
-        E01 'Coal power plants'
-        E21 'Nuclear power plants'
-        E31 'Hydroelectric power plants'
-        E51 'Pumped storage'
-        E70 'Diesel power plants'
+        COAL 'Coal power plants'
+        NUCLEAR 'Nuclear power plants'
+        HYDRO 'Hydroelectric power plants'
+        STOR_HYDRO 'Pumped storage'
+        DIESEL_GEN 'Diesel power plants'
         IMPDSL1 'Diesel imports'
         IMPGSL1 'Gasoline imports'
         IMPHCO1 'Coal imports'
@@ -50,11 +49,6 @@ set     TECHNOLOGY      /
         RHu 'Residential heating - Unmet demand'
         RLu 'Residential lighting - Unmet demand'
         TXu 'Personal transport - Unmet demand'
-* new technologies
-        SPP 'Solar power plants'
-        WPP 'Wind power plants'
-        SUN 'Energy input from the sun'
-        WIN 'Energy input from the wind'
 /;
 
 set     TIMESLICE       /
@@ -77,9 +71,6 @@ set     FUEL    /
         RH 'Demand for residential heating'
         RL 'Demand for residential lighting'
         TX 'Demand for personal transport'
-* new fuels 
-        SOL 'Solar'
-        WND 'Wind'
 /;
 
 set     EMISSION        / CO2, NOX /;
@@ -91,8 +82,8 @@ set     DAILYTIMEBRACKET / 1, 2 /;
 set     STORAGE / DAM /;
 
 # characterize technologies 
-set power_plants(TECHNOLOGY) / E01, E21, E31, E70, SPP, WPP /;
-set storage_plants(TECHNOLOGY) / E51 /;
+set power_plants(TECHNOLOGY) / COAL, NUCLEAR, HYDRO, DIESEL_GEN /;
+set storage_plants(TECHNOLOGY) / STOR_HYDRO /;
 set fuel_transformation(TECHNOLOGY) / SRE /;
 set appliances(TECHNOLOGY) / RHE, RHO, RL1, TXD, TXE, TXG /;
 set unmet_demand(TECHNOLOGY) / RHu, RLu, TXu /;
@@ -101,11 +92,11 @@ set primary_imports(TECHNOLOGY) / IMPHCO1, IMPOIL1, IMPURN1 /;
 set secondary_imports(TECHNOLOGY) / IMPDSL1, IMPGSL1 /;
 
 set fuel_production(TECHNOLOGY);
-set fuel_production_fict(TECHNOLOGY) /RIV, SUN, WIN/;
-set secondary_production(TECHNOLOGY) /E01, E21, E31, E51, E70, SPP, WPP, SRE/;
+set fuel_production_fict(TECHNOLOGY) /RIV/;
+set secondary_production(TECHNOLOGY) /COAL, NUCLEAR, HYDRO, STOR_HYDRO, DIESEL_GEN, SRE/;
 
 #Characterize fuels 
-set primary_fuel(FUEL) / HCO, OIL, URN, HYD, SOL, WND /;
+set primary_fuel(FUEL) / HCO, OIL, URN, HYD /;
 set secondary_carrier(FUEL) / DSL, GSL, ELC /;
 set final_demand(FUEL) / RH, RL, TX /;
 
@@ -259,21 +250,21 @@ CapacityToActivityUnit(r,t)$power_plants(t) = 31.536;
 
 CapacityToActivityUnit(r,t)$(CapacityToActivityUnit(r,t) = 0) = 1;
 
-CapacityFactor(r,'E01',l,y) = 0.8;
-CapacityFactor(r,'E21',l,y) = 0.8;
-CapacityFactor(r,'E31',l,y) = 0.27;
-CapacityFactor(r,'E51',l,y) = 0.17;
-CapacityFactor(r,'E70',l,y) = 0.8;
+CapacityFactor(r,'COAL',l,y) = 0.8;
+CapacityFactor(r,'NUCLEAR',l,y) = 0.8;
+CapacityFactor(r,'HYDRO',l,y) = 0.27;
+CapacityFactor(r,'STOR_HYDRO',l,y) = 0.17;
+CapacityFactor(r,'DIESEL_GEN',l,y) = 0.8;
 CapacityFactor(r,t,l,y)$(CapacityFactor(r,t,l,y) = 0) = 1;
 
 AvailabilityFactor(r,t,y) = 1;
 
 parameter OperationalLife(r,t) /
-  UTOPIA.E01  40
-  UTOPIA.E21  40
-  UTOPIA.E31  100
-  UTOPIA.E51  100
-  UTOPIA.E70  40
+  UTOPIA.COAL  40
+  UTOPIA.NUCLEAR  40
+  UTOPIA.HYDRO  100
+  UTOPIA.STOR_HYDRO  100
+  UTOPIA.DIESEL_GEN  40
   UTOPIA.RHE  30
   UTOPIA.RHO  30
   UTOPIA.RL1  10
@@ -285,51 +276,51 @@ parameter OperationalLife(r,t) /
 OperationalLife(r,t)$(OperationalLife(r,t) = 0) = 1;
 
 parameter ResidualCapacity(r,t,y) /
-  UTOPIA.E01.1990  .5
-  UTOPIA.E01.1991  .5
-  UTOPIA.E01.1992  .5
-  UTOPIA.E01.1993  .4
-  UTOPIA.E01.1994  .4
-  UTOPIA.E01.1995  .4
-  UTOPIA.E01.1996  .4
-  UTOPIA.E01.1997  .4
-  UTOPIA.E01.1998  .4
-  UTOPIA.E01.1999  .3
-  UTOPIA.E01.2000  .3
-  UTOPIA.E01.2001  .3
-  UTOPIA.E01.2002  .3
-  UTOPIA.E01.2003  .3
-  UTOPIA.E01.2004  .3
-  UTOPIA.E01.2005  .2
-  UTOPIA.E01.2006  .2
-  UTOPIA.E01.2007  .2
-  UTOPIA.E01.2008  .2
-  UTOPIA.E01.2009  .2
-  UTOPIA.E01.2010  .15
-  UTOPIA.E21.(1990*2010)  0
-  UTOPIA.E31.(1990*2010)  .1
-  UTOPIA.E51.(1990*2010)  .5
-  UTOPIA.E70.1990  .3
-  UTOPIA.E70.1991  .3
-  UTOPIA.E70.1992  .29
-  UTOPIA.E70.1993  .29
-  UTOPIA.E70.1994  .28
-  UTOPIA.E70.1995  .28
-  UTOPIA.E70.1996  .27
-  UTOPIA.E70.1997  .27
-  UTOPIA.E70.1998  .26
-  UTOPIA.E70.1999  .26
-  UTOPIA.E70.2000  .25
-  UTOPIA.E70.2001  .25
-  UTOPIA.E70.2002  .24
-  UTOPIA.E70.2003  .24
-  UTOPIA.E70.2004  .23
-  UTOPIA.E70.2005  .23
-  UTOPIA.E70.2006  .22
-  UTOPIA.E70.2007  .22
-  UTOPIA.E70.2008  .21
-  UTOPIA.E70.2009  .21
-  UTOPIA.E70.2010  .2
+  UTOPIA.COAL.1990  .5
+  UTOPIA.COAL.1991  .5
+  UTOPIA.COAL.1992  .5
+  UTOPIA.COAL.1993  .4
+  UTOPIA.COAL.1994  .4
+  UTOPIA.COAL.1995  .4
+  UTOPIA.COAL.1996  .4
+  UTOPIA.COAL.1997  .4
+  UTOPIA.COAL.1998  .4
+  UTOPIA.COAL.1999  .3
+  UTOPIA.COAL.2000  .3
+  UTOPIA.COAL.2001  .3
+  UTOPIA.COAL.2002  .3
+  UTOPIA.COAL.2003  .3
+  UTOPIA.COAL.2004  .3
+  UTOPIA.COAL.2005  .2
+  UTOPIA.COAL.2006  .2
+  UTOPIA.COAL.2007  .2
+  UTOPIA.COAL.2008  .2
+  UTOPIA.COAL.2009  .2
+  UTOPIA.COAL.2010  .15
+  UTOPIA.NUCLEAR.(1990*2010)  0
+  UTOPIA.HYDRO.(1990*2010)  .1
+  UTOPIA.STOR_HYDRO.(1990*2010)  .5
+  UTOPIA.DIESEL_GEN.1990  .3
+  UTOPIA.DIESEL_GEN.1991  .3
+  UTOPIA.DIESEL_GEN.1992  .29
+  UTOPIA.DIESEL_GEN.1993  .29
+  UTOPIA.DIESEL_GEN.1994  .28
+  UTOPIA.DIESEL_GEN.1995  .28
+  UTOPIA.DIESEL_GEN.1996  .27
+  UTOPIA.DIESEL_GEN.1997  .27
+  UTOPIA.DIESEL_GEN.1998  .26
+  UTOPIA.DIESEL_GEN.1999  .26
+  UTOPIA.DIESEL_GEN.2000  .25
+  UTOPIA.DIESEL_GEN.2001  .25
+  UTOPIA.DIESEL_GEN.2002  .24
+  UTOPIA.DIESEL_GEN.2003  .24
+  UTOPIA.DIESEL_GEN.2004  .23
+  UTOPIA.DIESEL_GEN.2005  .23
+  UTOPIA.DIESEL_GEN.2006  .22
+  UTOPIA.DIESEL_GEN.2007  .22
+  UTOPIA.DIESEL_GEN.2008  .21
+  UTOPIA.DIESEL_GEN.2009  .21
+  UTOPIA.DIESEL_GEN.2010  .2
   UTOPIA.RHE.(1990*2010)  0
   UTOPIA.RHO.1990  25
   UTOPIA.RHO.1991  23.8
@@ -397,11 +388,11 @@ parameter ResidualCapacity(r,t,y) /
 /;
 
 parameter InputActivityRatio(r,t,f,m,y) /
-  UTOPIA.E01.HCO.1.(1990*2010)  3.125
-  UTOPIA.E21.URN.1.(1990*2010)  3.5
-  UTOPIA.E31.HYD.1.(1990*2010)  3.125
-  UTOPIA.E51.ELC.2.(1990*2010)  1.3889
-  UTOPIA.E70.DSL.1.(1990*2010)  3.4
+  UTOPIA.COAL.HCO.1.(1990*2010)  3.125
+  UTOPIA.NUCLEAR.URN.1.(1990*2010)  3.5
+  UTOPIA.HYDRO.HYD.1.(1990*2010)  3.125
+  UTOPIA.STOR_HYDRO.ELC.2.(1990*2010)  1.3889
+  UTOPIA.DIESEL_GEN.DSL.1.(1990*2010)  3.4
   UTOPIA.RHE.ELC.1.(1990*2010)  1
   UTOPIA.RHO.DSL.1.(1990*2010)  1.428571
   UTOPIA.RL1.ELC.1.(1990*2010)  1
@@ -412,11 +403,11 @@ parameter InputActivityRatio(r,t,f,m,y) /
 /;
 
 parameter OutputActivityRatio(r,t,f,m,y) /
-  UTOPIA.E01.ELC.1.(1990*2010)  1
-  UTOPIA.E21.ELC.1.(1990*2010)  1
-  UTOPIA.E31.ELC.1.(1990*2010)  1
-  UTOPIA.E51.ELC.1.(1990*2010)  1
-  UTOPIA.E70.ELC.1.(1990*2010)  1
+  UTOPIA.COAL.ELC.1.(1990*2010)  1
+  UTOPIA.NUCLEAR.ELC.1.(1990*2010)  1
+  UTOPIA.HYDRO.ELC.1.(1990*2010)  1
+  UTOPIA.STOR_HYDRO.ELC.1.(1990*2010)  1
+  UTOPIA.DIESEL_GEN.ELC.1.(1990*2010)  1
   UTOPIA.IMPDSL1.DSL.1.(1990*2010)  1
   UTOPIA.IMPGSL1.GSL.1.(1990*2010)  1
   UTOPIA.IMPHCO1.HCO.1.(1990*2010)  1
@@ -445,31 +436,31 @@ InputActivityRatio(r,'IMPGSL1','OIL',m,y)$(not OutputActivityRatio(r,'SRE','GSL'
 *------------------------------------------------------------------------
 
 parameter CapitalCost /
-  UTOPIA.E01.1990  1400
-  UTOPIA.E01.1991  1390
-  UTOPIA.E01.1992  1380
-  UTOPIA.E01.1993  1370
-  UTOPIA.E01.1994  1360
-  UTOPIA.E01.1995  1350
-  UTOPIA.E01.1996  1340
-  UTOPIA.E01.1997  1330
-  UTOPIA.E01.1998  1320
-  UTOPIA.E01.1999  1310
-  UTOPIA.E01.2000  1300
-  UTOPIA.E01.2001  1290
-  UTOPIA.E01.2002  1280
-  UTOPIA.E01.2003  1270
-  UTOPIA.E01.2004  1260
-  UTOPIA.E01.2005  1250
-  UTOPIA.E01.2006  1240
-  UTOPIA.E01.2007  1230
-  UTOPIA.E01.2008  1220
-  UTOPIA.E01.2009  1210
-  UTOPIA.E01.2010  1200
-  UTOPIA.E21.(1990*2010)  5000
-  UTOPIA.E31.(1990*2010)  3000
-  UTOPIA.E51.(1990*2010)  900
-  UTOPIA.E70.(1990*2010)  1000
+  UTOPIA.COAL.1990  1400
+  UTOPIA.COAL.1991  1390
+  UTOPIA.COAL.1992  1380
+  UTOPIA.COAL.1993  1370
+  UTOPIA.COAL.1994  1360
+  UTOPIA.COAL.1995  1350
+  UTOPIA.COAL.1996  1340
+  UTOPIA.COAL.1997  1330
+  UTOPIA.COAL.1998  1320
+  UTOPIA.COAL.1999  1310
+  UTOPIA.COAL.2000  1300
+  UTOPIA.COAL.2001  1290
+  UTOPIA.COAL.2002  1280
+  UTOPIA.COAL.2003  1270
+  UTOPIA.COAL.2004  1260
+  UTOPIA.COAL.2005  1250
+  UTOPIA.COAL.2006  1240
+  UTOPIA.COAL.2007  1230
+  UTOPIA.COAL.2008  1220
+  UTOPIA.COAL.2009  1210
+  UTOPIA.COAL.2010  1200
+  UTOPIA.NUCLEAR.(1990*2010)  5000
+  UTOPIA.HYDRO.(1990*2010)  3000
+  UTOPIA.STOR_HYDRO.(1990*2010)  900
+  UTOPIA.DIESEL_GEN.(1990*2010)  1000
   UTOPIA.IMPDSL1.(1990*2010)  0
   UTOPIA.IMPGSL1.(1990*2010)  0
   UTOPIA.IMPHCO1.(1990*2010)  0
@@ -509,9 +500,9 @@ parameter CapitalCost /
 /;
 
 parameter VariableCost(r,t,m,y) /
-  UTOPIA.E01.1.(1990*2010)  .3
-  UTOPIA.E21.1.(1990*2010)  1.5
-  UTOPIA.E70.1.(1990*2010)  .4
+  UTOPIA.COAL.1.(1990*2010)  .3
+  UTOPIA.NUCLEAR.1.(1990*2010)  1.5
+  UTOPIA.DIESEL_GEN.1.(1990*2010)  .4
   UTOPIA.IMPDSL1.1.(1990*2010)  10
   UTOPIA.IMPGSL1.1.(1990*2010)  15
   UTOPIA.IMPHCO1.1.(1990*2010)  2
@@ -525,11 +516,11 @@ parameter VariableCost(r,t,m,y) /
 VariableCost(r,t,m,y)$(VariableCost(r,t,m,y) = 0) = 1e-5;
 
 parameter FixedCost /
-  UTOPIA.E01.(1990*2010)  40
-  UTOPIA.E21.(1990*2010)  500
-  UTOPIA.E31.(1990*2010)  75
-  UTOPIA.E51.(1990*2010)  30
-  UTOPIA.E70.(1990*2010)  30
+  UTOPIA.COAL.(1990*2010)  40
+  UTOPIA.NUCLEAR.(1990*2010)  500
+  UTOPIA.HYDRO.(1990*2010)  75
+  UTOPIA.STOR_HYDRO.(1990*2010)  30
+  UTOPIA.DIESEL_GEN.(1990*2010)  30
   UTOPIA.RHO.(1990*2010)  1
   UTOPIA.RL1.(1990*2010)  9.46
   UTOPIA.TXD.(1990*2010)  52
@@ -543,11 +534,11 @@ parameter FixedCost /
 *------------------------------------------------------------------------
 
 parameter TechnologyToStorage(r,m,t,s) /
-  UTOPIA.2.E51.DAM  1
+  UTOPIA.2.STOR_HYDRO.DAM  1
 /;
 
 parameter TechnologyFromStorage(r,m,t,s) /
-  UTOPIA.1.E51.DAM  1
+  UTOPIA.1.STOR_HYDRO.DAM  1
 /;
 
 StorageLevelStart(r,s) = 999;
@@ -573,28 +564,28 @@ ResidualStorageCapacity(r,s,y) = 999;
 CapacityOfOneTechnologyUnit(r,t,y) = 0;
 
 parameter TotalAnnualMaxCapacity /
-  UTOPIA.E31.1990  .1301
-  UTOPIA.E31.1991  .1401
-  UTOPIA.E31.1992  .1401
-  UTOPIA.E31.1993  .1501
-  UTOPIA.E31.1994  .1501
-  UTOPIA.E31.1995  .1501
-  UTOPIA.E31.1996  .1601
-  UTOPIA.E31.1997  .1601
-  UTOPIA.E31.1998  .1601
-  UTOPIA.E31.1999  .1601
-  UTOPIA.E31.2000  .1701
-  UTOPIA.E31.2001  .201
-  UTOPIA.E31.2002  .201
-  UTOPIA.E31.2003  .201
-  UTOPIA.E31.2004  .201
-  UTOPIA.E31.2005  .201
-  UTOPIA.E31.2006  .201
-  UTOPIA.E31.2007  .201
-  UTOPIA.E31.2008  .201
-  UTOPIA.E31.2009  .201
-  UTOPIA.E31.2010  .2101
-  UTOPIA.E51.(1990*2010)  3
+  UTOPIA.HYDRO.1990  .1301
+  UTOPIA.HYDRO.1991  .1401
+  UTOPIA.HYDRO.1992  .1401
+  UTOPIA.HYDRO.1993  .1501
+  UTOPIA.HYDRO.1994  .1501
+  UTOPIA.HYDRO.1995  .1501
+  UTOPIA.HYDRO.1996  .1601
+  UTOPIA.HYDRO.1997  .1601
+  UTOPIA.HYDRO.1998  .1601
+  UTOPIA.HYDRO.1999  .1601
+  UTOPIA.HYDRO.2000  .1701
+  UTOPIA.HYDRO.2001  .201
+  UTOPIA.HYDRO.2002  .201
+  UTOPIA.HYDRO.2003  .201
+  UTOPIA.HYDRO.2004  .201
+  UTOPIA.HYDRO.2005  .201
+  UTOPIA.HYDRO.2006  .201
+  UTOPIA.HYDRO.2007  .201
+  UTOPIA.HYDRO.2008  .201
+  UTOPIA.HYDRO.2009  .201
+  UTOPIA.HYDRO.2010  .2101
+  UTOPIA.STOR_HYDRO.(1990*2010)  3
   UTOPIA.RHE.1990  EPS
   UTOPIA.RHE.1991  EPS
   UTOPIA.RHE.1992  EPS
@@ -664,27 +655,27 @@ TotalAnnualMaxCapacity(r,'TXE','1990') = 0;
 TotalAnnualMaxCapacity(r,'RHE','1990') = 0;
 
 parameter TotalAnnualMinCapacity(r,t,y) /
-  UTOPIA.E31.1990  .13
-  UTOPIA.E31.1991  .14
-  UTOPIA.E31.1992  .14
-  UTOPIA.E31.1993  .15
-  UTOPIA.E31.1994  .15
-  UTOPIA.E31.1995  .15
-  UTOPIA.E31.1996  .16
-  UTOPIA.E31.1997  .16
-  UTOPIA.E31.1998  .16
-  UTOPIA.E31.1999  .16
-  UTOPIA.E31.2000  .17
-  UTOPIA.E31.2001  .2
-  UTOPIA.E31.2002  .2
-  UTOPIA.E31.2003  .2
-  UTOPIA.E31.2004  .2
-  UTOPIA.E31.2005  .2
-  UTOPIA.E31.2006  .2
-  UTOPIA.E31.2007  .2
-  UTOPIA.E31.2008  .2
-  UTOPIA.E31.2009  .2
-  UTOPIA.E31.2010  .21
+  UTOPIA.HYDRO.1990  .13
+  UTOPIA.HYDRO.1991  .14
+  UTOPIA.HYDRO.1992  .14
+  UTOPIA.HYDRO.1993  .15
+  UTOPIA.HYDRO.1994  .15
+  UTOPIA.HYDRO.1995  .15
+  UTOPIA.HYDRO.1996  .16
+  UTOPIA.HYDRO.1997  .16
+  UTOPIA.HYDRO.1998  .16
+  UTOPIA.HYDRO.1999  .16
+  UTOPIA.HYDRO.2000  .17
+  UTOPIA.HYDRO.2001  .2
+  UTOPIA.HYDRO.2002  .2
+  UTOPIA.HYDRO.2003  .2
+  UTOPIA.HYDRO.2004  .2
+  UTOPIA.HYDRO.2005  .2
+  UTOPIA.HYDRO.2006  .2
+  UTOPIA.HYDRO.2007  .2
+  UTOPIA.HYDRO.2008  .2
+  UTOPIA.HYDRO.2009  .2
+  UTOPIA.HYDRO.2010  .21
   UTOPIA.SRE.1990  .1
   UTOPIA.SRE.1991  .1
   UTOPIA.SRE.1992  .1
@@ -731,11 +722,11 @@ TotalTechnologyModelPeriodActivityLowerLimit(r,t) = 0;
 *-----------------------------------------------------------------------
 
 parameter ReserveMarginTagTechnology(r,t,y) /
-  UTOPIA.E01.(1990*2010)  1
-  UTOPIA.E21.(1990*2010)  1
-  UTOPIA.E31.(1990*2010)  1
-  UTOPIA.E51.(1990*2010)  1
-  UTOPIA.E70.(1990*2010)  1
+  UTOPIA.COAL.(1990*2010)  1
+  UTOPIA.NUCLEAR.(1990*2010)  1
+  UTOPIA.HYDRO.(1990*2010)  1
+  UTOPIA.STOR_HYDRO.(1990*2010)  1
+  UTOPIA.DIESEL_GEN.(1990*2010)  1
 /;
 
 parameter ReserveMarginTagFuel(r,f,y) /

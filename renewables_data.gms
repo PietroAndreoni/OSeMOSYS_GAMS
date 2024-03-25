@@ -1,23 +1,42 @@
-set t_res(TECHNOLOGY) /SPP,WPP,E31/; 
+
+set TECHNOLOGY /
+* new technologies
+        SPV 'Solar power plants'
+        WPP 'Wind power plants'
+        SUN 'Energy input from the sun'
+        WIN 'Energy input from the wind'/;
+
+set FUEL / 
+* new fuels 
+        SOL 'Solar'
+        WND 'Wind' /;
+
+set t_res(TECHNOLOGY) /SPV,WPP/; 
 set f_res(FUEL) /SOL,WND/; 
 
-# Characterize SOLAR technology
-OperationalLife(r,'SPP') = 15;
-CapacityFactor(r,'SPP','ID',y) = 0.4;
-CapacityFactor(r,'SPP','IN',y) = 0;
-CapacityFactor(r,'SPP','SD',y) = 0.8;
-CapacityFactor(r,'SPP','SN',y) = 0;
-CapacityFactor(r,'SPP','WD',y) = 0.1;
-CapacityFactor(r,'SPP','WN',y) = 0;
+set power_plants(TECHNOLOGY) / SPV, WPP/;
+set fuel_production_fict(TECHNOLOGY) /SUN, WIN/;
+set secondary_production(TECHNOLOGY) /SUN, WIN/;
 
-InputActivityRatio(r,'SPP','SOL',m,y) = 1; #IEA convention
-OutputActivityRatio(r,'SPP','ELC',m,y) = 1; 
+set primary_fuel(FUEL) / SOL, WND /;
+
+# Characterize SOLAR technology
+OperationalLife(r,'SPV') = 15;
+CapacityFactor(r,'SPV','ID',y) = 0.4;
+CapacityFactor(r,'SPV','IN',y) = 0;
+CapacityFactor(r,'SPV','SD',y) = 0.8;
+CapacityFactor(r,'SPV','SN',y) = 0;
+CapacityFactor(r,'SPV','WD',y) = 0.1;
+CapacityFactor(r,'SPV','WN',y) = 0;
+
+InputActivityRatio(r,'SPV','SOL',m,y) = 1; #IEA convention
+OutputActivityRatio(r,'SPV','ELC',m,y) = 1; 
 OutputActivityRatio(r,'SUN','SOL',m,y) = 1; 
 
-CapitalCost(r,'SPP',y) = 1000;
+CapitalCost(r,'SPV',y) = 1000;
 CapitalCost(r,'SUN',y) = 0; #the sun is free
-VariableCost(r,'SPP',m,y) = 1e-5;
-FixedCost(r,'SPP',y) = 5;
+VariableCost(r,'SPV',m,y) = 1e-5;
+FixedCost(r,'SPV',y) = 5;
 
 
 # Characterize WIND technology
