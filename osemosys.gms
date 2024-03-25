@@ -23,18 +23,15 @@
 * declarations for sets, parameters, variables
 $eolcom #
 $onmulti
-$setenv gdxcompress 1
 $onrecurse
-$offlisting
 $if not set scen $setglobal scen base
 $include osemosys_dec.gms
 * specify Model data
-$include utopia_data.gms
-$include renewables_data.gms
-*$include simplest_energy_system.gms
+*$include utopia_data.gms
+*$include renewables_data.gms
+$include simplest_energy_system.gms
 $include compute_data.gms
 * define model equations
-$offlisting
 $include osemosys_equ.gms
 
 * some scenario flags
