@@ -35,13 +35,16 @@ set secondary_carrier(FUEL) / gasoline, electricity /;
 * final demand is only output of the system
 set final_demand(FUEL) / lighting /;
 
-set STORAGE /DAM/;
 ** what I just described is a modelling convention. Osemosys is flexible enough to allow more complex interactions. 
 ** For example, lighting could be an input for the refineries (you need light for the operators..). 
 ** However, the self-use for energy-producting technologies is accounted for in efficiencies, whicn allows to define the flow
 * from primary to final energy in a linear way. 
 
+*** I need to populate the storage set with a dummy or the model will not compile.
+set STORAGE /dummy/;
+
 *** HERE, I AM INITIALIZING ALL PARAMETERS OF THE MODEL TO DEFAULT VALUES AFTER POPULATING THE SETS:
+* By default, values are initialized as such that the technologies are not active
 $include osemosys_init.gms
 
 * ANYWAY... LET'S START BUILDING THE MODEL
@@ -84,23 +87,24 @@ OutputActivityRatio(r,"light_bulbs","lighting",m,y) = 0.2;
 * let's start with the final demands
 * we have only one final demand, lighting
 * we need to define the demand for lighting in each year (let's assume constant, for now)
-SpecifiedAnnualDemand(r,"lighting",y) = 1000;
+AccumulatedAnnualDemand(r,"lighting",y) = 1000;
+
 * NB we can also specify a time profile for the demand, but we will do it later
 
 * now, let's define the technologies: each is characterized by costs (capital, fixed and variable), capacity and availability factors
 *** costs (per year)
 *overnight costs of construction
 CapitalCost(r,"refineries",y) = 1000;
-CapitalCost(r,"oil_power_plant",y) = 500;
-CapitalCost(r,"light_bulbs",y) = 1;
+CapitalCost(r,"oil_power_plant",y) = 300;
+CapitalCost(r,"light_bulbs",y) = 0.001;
 
 ** yearly fixed cost (regardless of activity)
 FixedCost(r,"refineries",y) = 40;
-FixedCost(r,"oil_power_plant",y) = 20;
+FixedCost(r,"oil_power_plant",y) = 10;
 FixedCost(r,"light_bulbs",y) = 0;
 
 ** variable cost (per unit of activity)
-VariableCost(r,"refineries",m,y) = 2;
+VariableCost(r,"refineries",m,y) = 10;
 VariableCost(r,"oil_power_plant",m,y) = 5;
 VariableCost(r,"light_bulbs",m,y) = 0;
 
@@ -117,11 +121,16 @@ AvailabilityFactor(r,"light_bulbs",y) = 1;
 * you also have the parameter CapacityFactor, that depends on the timeslice. 
 * This can be used to mimick the supply curve of renewables. We'll see how in another exercise
 
+* The reserve margin is specified by Reserve Margin (by default=0), for fuel ReserveMarginTagFuel, provided by technology ReserveMarginTagTechnology
+ReserveMarginTagFuel(r,"electricity",y) = 1;
+ReserveMarginTagTechnology(r,"oil_power_plant",y) = 1;
+
 * Finally, we want to characterize emissions. 
 * As you can see, the EmissionActivityRatio(r,t,e,m,y) depends on the technology, NOT the fuel. 
 * this is convenient to track direct process emissions (for example chemicals and cement)
 * to attribute emission to a fuel, it is convenient to create a fictional technology for each primary fuel (and assign an emission coefficient to them)
 * LET'S DO IT: mind that thanks to $onrecursive we can redefine static sets
+
 set TECHNOLOGY /oil_market/;
 
 * this technologies produces crude oil for no inputs and with 100% efficiency
@@ -133,10 +142,10 @@ VariableCost(r,"oil_market",m,y) = 50;
 * operational life is virtually infinite (more than the time horizon of the model)
 OperationalLife(r,"oil_market") = 100;
 
+AvailabilityFactor(r,"oil_market",y) = 1;
+
 * infinite initial capacity
 ResidualCapacity(r,"oil_market",y) = 99999;
 
 * and, because fictional technology and fuel map 1 to 1, the emission equal the stechiometric emissions of crude oil
 EmissionActivityRatio(r,"oil_market","CO2",m,y) = 0.075;
-
-ContinousDepreciation(r,t) = 1 - exp( 1 / ( - OperationalLife(r,t) + (0.01/2) * OperationalLife(r,t)**2) ); #20: DAC lifetime
