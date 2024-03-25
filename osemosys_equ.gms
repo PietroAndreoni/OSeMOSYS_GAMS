@@ -61,7 +61,13 @@ EQ_SpecifiedDemand1(r,l,f,y)$(SpecifiedAnnualDemand(r,f,y) gt 0)..
 * Calculates cumulative new capacity installed over the time horizon
 equation CAa1_TotalNewCapacity(REGION,TECHNOLOGY,YEAR);
 CAa1_TotalNewCapacity(r,t,y)..
-    AccumulatedNewCapacity(r,t,y) =e= sum(yy$((y.val-yy.val < OperationalLife(r,t)) AND (y.val-yy.val >= 0)), NewCapacity(r,t,yy));
+    AccumulatedNewCapacity(r,t,y) =e= 
+$ifthen.solvermode set mip
+    sum(yy$((y.val-yy.val < OperationalLife(r,t)) AND (y.val-yy.val >= 0)), NewCapacity(r,t,yy))
+$else.solvermode 
+    AccumulatedNewCapacity(r,t,y-1) * (1 - ContinousDepreciation(r,t)) + NewCapacity(r,t,y)
+$endif.solvermode
+    ;
 
 equation CAa2_TotalAnnualCapacity(REGION,TECHNOLOGY,YEAR);
 CAa2_TotalAnnualCapacity(r,t,y)..
@@ -75,14 +81,15 @@ equation CAa4_Constraint_Capacity(REGION,TIMESLICE,TECHNOLOGY,YEAR);
 CAa4_Constraint_Capacity(r,l,t,y)..
     RateOfTotalActivity(r,l,t,y) =l= TotalCapacityAnnual(r,t,y) * CapacityFactor(r,t,l,y) * CapacityToActivityUnit(r,t);
 
-equation CAa5_TotalNewCapacity(REGION,TECHNOLOGY,YEAR);
-CAa5_TotalNewCapacity(r,t,y)$(CapacityOfOneTechnologyUnit(r,t,y) <> 0)..
-    CapacityOfOneTechnologyUnit(r,t,y) * NumberOfNewTechnologyUnits(r,t,y) =e= NewCapacity(r,t,y);
 
 * NOTE: OSeMOSYS uses Mixed Integer Programming to solve models that
 * define CapacityOfTechnologyUnit. Using this parameter is likely to
 * increase the model computation time.
-
+$ifthen.solvermode set mip
+equation CAa5_TotalNewCapacity(REGION,TECHNOLOGY,YEAR);
+CAa5_TotalNewCapacity(r,t,y)$(CapacityOfOneTechnologyUnit(r,t,y) <> 0)..
+    CapacityOfOneTechnologyUnit(r,t,y) * NumberOfNewTechnologyUnits(r,t,y) =e= NewCapacity(r,t,y);
+$endif.solvermode
 
 
 

@@ -201,6 +201,8 @@ parameter AvailabilityFactor(REGION,TECHNOLOGY,YEAR);
 * years.
 parameter OperationalLife(REGION,TECHNOLOGY);
 
+parameter ContinousDepreciation(REGION,TECHNOLOGY);
+
 * ResidualCapacity[r,t,y]: Remained capacity available from before the
 * modelling period.
 parameter ResidualCapacity(REGION,TECHNOLOGY,YEAR);
@@ -533,7 +535,7 @@ positive variable TotalDiscountedStorageCost(REGION,STORAGE,YEAR);
 * NumberOfNewTechnologyUnits[r,t,y]>=0, integer: Number of newly installed
 * units of technology t in year y, as a function of the parameter
 * CapacityOfOneTechnologyUnit. [No unit]
-integer variable NumberOfNewTechnologyUnits(REGION,TECHNOLOGY,YEAR);
+$if set mip integer variable NumberOfNewTechnologyUnits(REGION,TECHNOLOGY,YEAR);
 
 * NewCapacity[r,t,y]>=0: Newly installed capacity of technology t in year
 * y. [Power]

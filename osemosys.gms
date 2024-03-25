@@ -22,12 +22,17 @@
 *
 * declarations for sets, parameters, variables
 $eolcom #
+$onmulti
+$setenv gdxcompress 1
+$onrecurse
 $offlisting
 $if not set scen $setglobal scen base
 $include osemosys_dec.gms
-* specify Utopia Model data
+* specify Model data
 $include utopia_data.gms
 $include renewables_data.gms
+*$include simplest_energy_system.gms
+$include compute_data.gms
 * define model equations
 $offlisting
 $include osemosys_equ.gms
@@ -51,7 +56,7 @@ $setglobal scen "emicap%emicap%"
 $endif.scen
 
 $ifthen.scen set nocoal 
-TotalAnnualMaxCapacity(r,'E01',y) = .5;
+TotalAnnualMaxCapacity(r,'COAL',y) = .5;
 $setglobal scen "nocoal"
 $endif.scen
 
@@ -64,8 +69,9 @@ $endif.scen
 model osemosys /all/;
 option limrow=0, limcol=0, solprint=on;
 option mip = copt;
-solve osemosys minimizing z using mip;
+option lp = conopt;
+solve osemosys minimizing z using lp;
 * create results in file SelResults.CSV
 $include osemosys_res.gms
-$include report.gms
+*$include report.gms
 execute_unload 'results_%scen%.gdx';
