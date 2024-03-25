@@ -70,7 +70,12 @@ model osemosys /all/;
 option limrow=0, limcol=0, solprint=on;
 option mip = copt;
 option lp = conopt;
+$ifthen.solvermode set mip
+solve osemosys minimizing z using mip;
+$else.solvermode
 solve osemosys minimizing z using lp;
+$endif.solvermode
+
 * create results in file SelResults.CSV
 $include osemosys_res.gms
 *$include report.gms
