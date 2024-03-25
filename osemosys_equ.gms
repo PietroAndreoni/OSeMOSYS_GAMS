@@ -215,6 +215,7 @@ Acc4_ModelPeriodCostByRegion(r)..
 * Storage Equations       
 *------------------------------------------------------------------------
 
+$ifthen.storage set storage
 
 equation S1_RateOfStorageCharge(REGION,STORAGE,SEASON,DAYTYPE,DAILYTIMEBRACKET,YEAR);
 S1_RateOfStorageCharge(r,s,ls,ld,lh,y)..
@@ -381,7 +382,7 @@ SI9_SalvageValueStorageDiscountedToStartYear(r,s,y)..
 equation SI10_TotalDiscountedCostByStorage(REGION,STORAGE,YEAR);
 SI10_TotalDiscountedCostByStorage(r,s,y)..
     DiscountedCapitalInvestmentStorage(r,s,y)-DiscountedSalvageValueStorage(r,s,y) =e= TotalDiscountedStorageCost(r,s,y);
-
+$endif.storage
 
 
 *------------------------------------------------------------------------	
