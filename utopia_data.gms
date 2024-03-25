@@ -1,12 +1,9 @@
-$offlisting
 * UTOPIA_DATA.GMS - specify Utopia Model data in format required by GAMS
 *
 * OSEMOSYS 2011.07.07 conversion to GAMS by Ken Noble.Noble-Soft Systems - August 2012
 * OSEMOSYS 2016.08.01 update by Thorsten Burandt, Konstantin L�ffler and Karlo Hainsch, TU Berlin (Workgroup for Infrastructure Policy) - October 2017
 * OSEMOSYS 2020.04.13 reformatting by Giacomo Marangoni
 * OSEMOSYS 2020.04.15 change yearsplit by Giacomo Marangoni
-
-$offlisting
 
 * OSEMOSYS 2016.08.01
 * Open Source energy Modeling SYStem
@@ -24,7 +21,6 @@ $offlisting
 *------------------------------------------------------------------------	
 * Sets       
 *------------------------------------------------------------------------
-$offlisting
 
 set     YEAR    / 1990*2010 /;
 set     TECHNOLOGY      /
@@ -100,6 +96,7 @@ set primary_fuel(FUEL) / HCO, OIL, URN, HYD /;
 set secondary_carrier(FUEL) / DSL, GSL, ELC /;
 set final_demand(FUEL) / RH, RL, TX /;
 
+*$include osemosys_init.gms
 
 *------------------------------------------------------------------------	
 * Parameters - Global
@@ -241,18 +238,20 @@ parameter AccumulatedAnnualDemand(r,f,y) /
   UTOPIA.TX.2010  11.69
 /;
 
-
 *------------------------------------------------------------------------	
 * Parameters - Performance       
 *------------------------------------------------------------------------
 
 CapacityToActivityUnit(r,t)$power_plants(t) = 31.536;
 
+CapacityToActivityUnit(r,t)$(CapacityToActivityUnit(r,t) = 0) = 1;
+
 CapacityFactor(r,'COAL',l,y) = 0.8;
 CapacityFactor(r,'NUCLEAR',l,y) = 0.8;
 CapacityFactor(r,'HYDRO',l,y) = 0.27;
 CapacityFactor(r,'STOR_HYDRO',l,y) = 0.17;
 CapacityFactor(r,'DIESEL_GEN',l,y) = 0.8;
+CapacityFactor(r,t,l,y)$(CapacityFactor(r,t,l,y) = 0) = 1;
 
 AvailabilityFactor(r,t,y) = 1;
 
@@ -270,6 +269,7 @@ parameter OperationalLife(r,t) /
   UTOPIA.TXE  15
   UTOPIA.TXG  15
 /;
+OperationalLife(r,t)$(OperationalLife(r,t) = 0) = 1;
 
 parameter ResidualCapacity(r,t,y) /
   UTOPIA.COAL.1990  .5
@@ -509,6 +509,7 @@ parameter VariableCost(r,t,m,y) /
   UTOPIA.SRE.1.(1990*2010)  10
   UTOPIA.TXU.1.(1990*2010)  99999
 /;
+VariableCost(r,t,m,y)$(VariableCost(r,t,m,y) = 0) = 1e-5;
 
 parameter FixedCost /
   UTOPIA.COAL.(1990*2010)  40
@@ -535,6 +536,22 @@ parameter TechnologyToStorage(r,m,t,s) /
 parameter TechnologyFromStorage(r,m,t,s) /
   UTOPIA.1.STOR_HYDRO.DAM  1
 /;
+
+StorageLevelStart(r,s) = 999;
+
+StorageMaxChargeRate(r,s) = 99;
+
+StorageMaxDischargeRate(r,s) = 99;
+
+MinStorageCharge(r,s,y) = 0;
+
+OperationalLifeStorage(r,s) = 99;
+
+CapitalCostStorage(r,s,y) = 0;
+
+ResidualStorageCapacity(r,s,y) = 999;
+
+
 
 *------------------------------------------------------------------------	
 * Parameters - Capacity and investment constraints       
@@ -629,6 +646,7 @@ parameter TotalAnnualMaxCapacity /
   UTOPIA.TXE.2009  9.4
   UTOPIA.TXE.2010  10
 /;
+TotalAnnualMaxCapacity(r,t,y)$(TotalAnnualMaxCapacity(r,t,y) = 0) = 99999;
 TotalAnnualMaxCapacity(r,'TXE','1990') = 0;
 TotalAnnualMaxCapacity(r,'RHE','1990') = 0;
 
@@ -677,6 +695,24 @@ parameter TotalAnnualMinCapacity(r,t,y) /
   UTOPIA.SRE.2010  0
 /;
 
+TotalAnnualMaxCapacityInvestment(r,t,y) = 99999;
+
+TotalAnnualMinCapacityInvestment(r,t,y) = 0;
+
+
+*------------------------------------------------------------------------	
+* Parameters - Activity constraints       
+*------------------------------------------------------------------------
+
+TotalTechnologyAnnualActivityUpperLimit(r,t,y) = 99999;
+
+TotalTechnologyAnnualActivityLowerLimit(r,t,y) = 0;
+
+TotalTechnologyModelPeriodActivityUpperLimit(r,t) = 99999;
+
+TotalTechnologyModelPeriodActivityLowerLimit(r,t) = 0;
+
+
 *------------------------------------------------------------------------	
 * Parameters - Reserve margin
 *-----------------------------------------------------------------------
@@ -697,6 +733,18 @@ parameter ReserveMargin(r,y) /
   UTOPIA.(1990*2010)  1.18
 /;
 
+
+*------------------------------------------------------------------------	
+* Parameters - RE Generation Target       
+*------------------------------------------------------------------------
+
+RETagTechnology(r,t,y) = 0;
+
+RETagFuel(r,f,y) = 0;
+
+REMinProductionTarget(r,y) = 0;
+
+
 *------------------------------------------------------------------------	
 * Parameters - Emissions       
 *------------------------------------------------------------------------
@@ -709,3 +757,13 @@ parameter EmissionActivityRatio(r,t,e,m,y) /
   UTOPIA.TXD.NOX.1.(1990*2010)  1
   UTOPIA.TXG.NOX.1.(1990*2010)  1
 /;
+
+EmissionsPenalty(r,e,y) = 0;
+
+AnnualExogenousEmission(r,e,y) = 0;
+
+AnnualEmissionLimit(r,e,y) = 9999;
+
+ModelPeriodExogenousEmission(r,e) = 0;
+
+ModelPeriodEmissionLimit(r,e) = 9999;
