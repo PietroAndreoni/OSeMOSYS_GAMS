@@ -29,9 +29,27 @@ $if not set data $setglobal data baseenergysystem
 $include "Model/osemosys_dec.gms"
 * specify Model data
 $include "Data/%data%_data.gms"
+* perform data computations when needed
 $include "Model/compute_data.gms"
 * define model equations
 $include "Model/osemosys_equ.gms"
+
+
+* some model options
+model osemosys /all/;
+option limrow=0, limcol=0, solprint=on;
+option mip = copt;
+option lp = conopt;
+
+* first, solve the model without any constraints
+$ifthen.solvermode set mip
+solve osemosys minimizing z using mip;
+$else.solvermode
+solve osemosys minimizing z using lp;
+$endif.solvermode
+
+$include "Model/osemosys_res.gms"
+execute_unload 'Results/results_SCENbase_DATA%data%.gdx';
 
 * some scenario flags
 $ifthen.scen set ren_target
@@ -61,11 +79,9 @@ CapitalCost(r,t,y)$t_res(t) = %cost_res%/100 * CapitalCost(r,t,y);
 $setglobal scen "lowcost%cost_res%"
 $endif.scen
 
-* solve the model
-model osemosys /all/;
-option limrow=0, limcol=0, solprint=on;
-option mip = copt;
-option lp = conopt;
+* solve the model with the constraints
+$ifthen.notbase not %scen%=="base" 
+
 $ifthen.solvermode set mip
 solve osemosys minimizing z using mip;
 $else.solvermode
@@ -74,5 +90,7 @@ $endif.solvermode
 
 * create results in file SelResults.CSV
 $include "Model/osemosys_res.gms"
-$if not %scen%=="base" $include "Model/report.gms"
+$include "Model/report.gms"
 execute_unload 'Results/results_SCEN%scen%_DATA%data%.gdx';
+
+$endif.notbase
