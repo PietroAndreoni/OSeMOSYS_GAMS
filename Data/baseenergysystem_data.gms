@@ -27,6 +27,8 @@ set power_plants(TECHNOLOGY) / "oil_power_plant" /;
 set fuel_transformation(TECHNOLOGY) / "refineries" /;
 set appliances(TECHNOLOGY) /"light_bulbs" /;
 
+renewable_tech(t) = no;
+
 *Define the fuels of the model. We have three: crude oil (primary energy), gasoline (secondary) and electricity (secondary)
 *but note that final demand is also defined as a fuel! So it's actually four...
 set     FUEL    / "crude_oil", "gasoline", "electricity", "lighting" /;
@@ -40,6 +42,7 @@ set secondary_carrier(FUEL) / "gasoline", "electricity" /;
 * final demand is only output of the system
 set final_demand(FUEL) / "lighting" /;
 
+renewable_fuel(f) = no;
 ** what I just described is a modelling convention. Osemosys is flexible enough to allow more complex interactions. 
 ** For example, lighting could be an input for the refineries (you need light for the operators..). 
 ** However, the self-use for energy-producting technologies is usually accounted for in efficiencies, whicn allows to define the flow

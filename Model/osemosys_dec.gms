@@ -102,6 +102,25 @@ alias (lh,DAILYTIMEBRACKET,lhlh);
 set STORAGE;
 alias (s,STORAGE);
 
+* SUBSETS TO CHARACTERIZE TECHNOLOGIES AND FUEL (FOR REPORTING)
+set power_plants(TECHNOLOGY);
+set storage_plants(TECHNOLOGY);
+set fuel_transformation(TECHNOLOGY);
+set appliances(TECHNOLOGY);
+set unmet_demand(TECHNOLOGY);
+set transport(TECHNOLOGY);
+set primary_imports(TECHNOLOGY);
+set secondary_imports(TECHNOLOGY);
+set fuel_production(TECHNOLOGY);
+set fuel_production_fict(TECHNOLOGY); #fictional technologies (e.g. IMPORT nodes)
+set secondary_production(TECHNOLOGY);
+set renewable_tech(TECHNOLOGY); 
+
+#Characterize fuels 
+set primary_fuel(FUEL);
+set secondary_carrier(FUEL);
+set final_demand(FUEL);
+set renewable_fuel(FUEL); 
 
 
 *------------------------------------------------------------------------	
