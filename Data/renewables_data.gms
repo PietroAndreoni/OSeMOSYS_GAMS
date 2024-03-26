@@ -3,17 +3,21 @@ $include "Data/utopia_data.gms"
 set TECHNOLOGY /
 * new technologies
         SPV 'Solar power plants'
-        WPP 'Wind power plants'/;
+        WPP 'Wind power plants'
+        SUN 'Energy input from the sun'
+        WIN 'Energy input from the wind'/;
 
 set FUEL / 
 * new fuels 
         SOL 'Solar'
         WND 'Wind' /;
- 
+
 set renewable_tech(TECHNOLOGY) /SPV,WPP/; 
 set renewable_fuel(FUEL) /SOL,WND/; 
 
 set power_plants(TECHNOLOGY) / SPV, WPP/;
+set fuel_production_fict(TECHNOLOGY) /SUN, WIN/;
+set secondary_production(TECHNOLOGY) /SUN, WIN/;
 
 set primary_fuel(FUEL) / SOL, WND /;
 
@@ -27,10 +31,11 @@ CapacityFactor(r,'SPV','WD',y) = 0.1;
 CapacityFactor(r,'SPV','WN',y) = 0;
 
 InputActivityRatio(r,'SPV','SOL',m,y) = 1; #IEA convention
-OutputActivityRatio(r,'SPV','ELC',m,y) = 0.98; 
+OutputActivityRatio(r,'SPV','ELC',m,y) = 1; 
+OutputActivityRatio(r,'SUN','SOL',m,y) = 1; 
 
-CapitalCost(r,'SPV',y)$(y.val le 2010) = 1000;
-CapitalCost(r,'SPV',y)$(y.val gt 2010) = max(1000*(1-0.05)**(y.val-2010),300);
+CapitalCost(r,'SPV',y) = 1000;
+CapitalCost(r,'SUN',y) = 0; #the sun is free
 VariableCost(r,'SPV',m,y) = 1e-5;
 FixedCost(r,'SPV',y) = 5;
 
@@ -46,10 +51,10 @@ CapacityFactor(r,'WPP','WD',y) = 0.3;
 CapacityFactor(r,'WPP','WN',y) = 0.4;
 
 InputActivityRatio(r,'WPP','WND',m,y) = 1; #IEA convention
-OutputActivityRatio(r,'WPP','ELC',m,y) = 0.98; 
+OutputActivityRatio(r,'WPP','ELC',m,y) = 1; 
+OutputActivityRatio(r,'WIN','WND',m,y) = 1; 
 
-CapitalCost(r,'WPP',y)$(y.val le 2010) = 1200;
-CapitalCost(r,'WPP',y)$(y.val gt 2010) = max(1200*(1-0.05)**(y.val-2010),600);
+CapitalCost(r,'WPP',y) = 1200;
+CapitalCost(r,'WIN',y) = 0;
 VariableCost(r,'WPP',m,y) = 1e-5;
 FixedCost(r,'WPP',y) = 7;
-
