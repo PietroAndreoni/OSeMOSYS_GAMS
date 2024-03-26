@@ -18,10 +18,14 @@ parameter rep_co2emiss_by_fen(*,r,f,y) 'GtonCO2';
 parameter rep_co2emiss_share_fen(*,r,f,y) '%';
 parameter rep_cost_wrt_base(*,r) '%';
 
+
 variable cost_base(r);
-$gdxin "Results/results_base.gdx"
+cost_base.l(r) = 0;
+$ifthen.scenario not %scen%=="base"
+$gdxin "Results/results_SCENbase_DATA%data%.gdx"
 $loaddc cost_base=ModelPeriodCostByRegion
 $gdxin
+$endif.scenario
 
 *------------------------------------------------------------------------	
 *    - total final energy [PJ/yr]

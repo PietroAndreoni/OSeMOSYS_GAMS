@@ -53,6 +53,7 @@ solve osemosys minimizing z using lp;
 $endif.solvermode
 
 $include "Model/osemosys_res.gms"
+$include "Model/report.gms"
 execute_unload 'Results/results_SCENbase_DATA%data%.gdx';
 
 * some scenario flags
