@@ -42,9 +42,6 @@ set     TECHNOLOGY      /
         TXE 'Personal vehicles - electric'
         TXG 'Personal vehicles - gasoline'
         RIV 'River'
-        RHu 'Residential heating - Unmet demand'
-        RLu 'Residential lighting - Unmet demand'
-        TXu 'Personal transport - Unmet demand'
 /;
 
 set     TIMESLICE       /
@@ -82,7 +79,7 @@ set power_plants(TECHNOLOGY) / COAL, NUCLEAR, HYDRO, DIESEL_GEN /;
 set storage_plants(TECHNOLOGY) / STOR_HYDRO /;
 set fuel_transformation(TECHNOLOGY) / SRE /;
 set appliances(TECHNOLOGY) / RHE, RHO, RL1, TXD, TXE, TXG /;
-set unmet_demand(TECHNOLOGY) / RHu, RLu, TXu /;
+set unmet_demand(TECHNOLOGY) / /;
 set transport(TECHNOLOGY) / TXD, TXE, TXG /;
 set primary_imports(TECHNOLOGY) / IMPHCO1, IMPOIL1, IMPURN1 /;
 set secondary_imports(TECHNOLOGY) / IMPDSL1, IMPGSL1 /;
@@ -385,6 +382,7 @@ parameter ResidualCapacity(r,t,y) /
   UTOPIA.TXD.2009  0
   UTOPIA.TXD.2010  0
 /;
+$if set no_initial_capacity ResidualCapacity(r,t,y) = 0;
 
 parameter InputActivityRatio(r,t,f,m,y) /
   UTOPIA.COAL.HCO.1.(1990*2010)  3.125
@@ -414,16 +412,13 @@ parameter OutputActivityRatio(r,t,f,m,y) /
   UTOPIA.IMPURN1.URN.1.(1990*2010)  1
   UTOPIA.RHE.RH.1.(1990*2010)  1
   UTOPIA.RHO.RH.1.(1990*2010)  1
-  UTOPIA.RHU.RH.1.(1990*2010)  1
   UTOPIA.RIV.HYD.1.(1990*2010)  1
   UTOPIA.RL1.RL.1.(1990*2010)  1
-  UTOPIA.RLU.RL.1.(1990*2010)  1
   UTOPIA.SRE.DSL.1.(1990*2010)  .7
   UTOPIA.SRE.GSL.1.(1990*2010)  .3
   UTOPIA.TXD.TX.1.(1990*2010)  1
   UTOPIA.TXE.TX.1.(1990*2010)  1
   UTOPIA.TXG.TX.1.(1990*2010)  1
-  UTOPIA.TXU.TX.1.(1990*2010)  1
 /;
 
 # By default, assume for imported secondary fuels the same efficiency of the internal refineries
@@ -467,10 +462,8 @@ parameter CapitalCost /
   UTOPIA.IMPURN1.(1990*2010)  0
   UTOPIA.RHE.(1990*2010)  90
   UTOPIA.RHO.(1990*2010)  100
-  UTOPIA.RHU.(1990*2010)  0
   UTOPIA.RIV.(1990*2010)  0
   UTOPIA.RL1.(1990*2010)  0
-  UTOPIA.RLU.(1990*2010)  0
   UTOPIA.SRE.(1990*2010)  100
   UTOPIA.TXD.(1990*2010)  1044
   UTOPIA.TXE.1990  2000
@@ -495,7 +488,6 @@ parameter CapitalCost /
   UTOPIA.TXE.2009  1525
   UTOPIA.TXE.2010  1500
   UTOPIA.TXG.(1990*2010)  1044
-  UTOPIA.TXU.(1990*2010)  0
 /;
 
 parameter VariableCost(r,t,m,y) /
@@ -507,10 +499,7 @@ parameter VariableCost(r,t,m,y) /
   UTOPIA.IMPHCO1.1.(1990*2010)  2
   UTOPIA.IMPOIL1.1.(1990*2010)  8
   UTOPIA.IMPURN1.1.(1990*2010)  2
-  UTOPIA.RHU.1.(1990*2010)  99999
-  UTOPIA.RLU.1.(1990*2010)  99999
   UTOPIA.SRE.1.(1990*2010)  10
-  UTOPIA.TXU.1.(1990*2010)  99999
 /;
 VariableCost(r,t,m,y)$(VariableCost(r,t,m,y) = 0) = 1e-5;
 
