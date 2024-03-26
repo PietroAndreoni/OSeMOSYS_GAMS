@@ -22,7 +22,10 @@ set     EMISSION / "CO2" /;
 *Define the technologies of the model. We have three: refineries, oil power plant, and our final appliance (say light bulbs)
 set     TECHNOLOGY   / "refineries", "oil_power_plant", "light_bulbs" /;
 
+* let's also classify them in different categories (might become useful for reporting)
 set power_plants(TECHNOLOGY) / "oil_power_plant" /;
+set fuel_transformation(TECHNOLOGY) / "refineries" /;
+set appliances(TECHNOLOGY) /"light_bulbs" /;
 
 *Define the fuels of the model. We have three: crude oil (primary energy), gasoline (secondary) and electricity (secondary)
 *but note that final demand is also defined as a fuel! So it's actually four...
@@ -31,11 +34,11 @@ set     FUEL    / "crude_oil", "gasoline", "electricity", "lighting" /;
 ** NOTE THAT ALL TYPE OF FUELS (i.e. ENERGY FLOWS) ARE DEFINED AS FUELS
 * we can conceptualize divide them as primary, secondary, and final demand. 
 * primary fuels are input to the system, but not outputs (i.e. they are not produced by any technology)
-set primary_fuel(FUEL) / crude_oil /;
+set primary_fuel(FUEL) / "crude_oil" /;
 * secondary fuels are both input and output of the system
-set secondary_carrier(FUEL) / gasoline, electricity /;
+set secondary_carrier(FUEL) / "gasoline", "electricity" /;
 * final demand is only output of the system
-set final_demand(FUEL) / lighting /;
+set final_demand(FUEL) / "lighting" /;
 
 ** what I just described is a modelling convention. Osemosys is flexible enough to allow more complex interactions. 
 ** For example, lighting could be an input for the refineries (you need light for the operators..). 
