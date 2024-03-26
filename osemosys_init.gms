@@ -1,4 +1,6 @@
-YearSplit(l,y) = 1/card(l); #by default, equally long timeslices
+scalar default_max /1e8/;
+
+YearSplit(l,y) = 1/card(l)/365; #by default, equally long timeslices
 DiscountRate(r) = 0.05; 
 TradeRoute(r,rr,f,y) = 0; 
 DepreciationMethod(r) = 1;
@@ -10,6 +12,7 @@ AccumulatedAnnualDemand(r,f,y) = 0;
 
 *** parameter on technology characteristics
 CapacityToActivityUnit(r,t) = 1;
+CapacityToActivityUnit(r,t)$(power_plants(t)) = 31.536;
 CapacityFactor(r,t,l,y) = 1;
 AvailabilityFactor(r,t,y) = 1;
 OperationalLife(r,t) = 0;
@@ -27,13 +30,13 @@ FixedCost(r,t,y) = 0;
 CapacityOfOneTechnologyUnit(r,t,y) = 0; #by default, not a MIP
 
 *** constraints on max capacity, investment, activity
-TotalAnnualMaxCapacity(r,t,y) = 99999;
+TotalAnnualMaxCapacity(r,t,y) = default_max;
 TotalAnnualMinCapacity(r,t,y) = 0;
-TotalAnnualMaxCapacityInvestment(r,t,y) = 99999;
+TotalAnnualMaxCapacityInvestment(r,t,y) = default_max;
 TotalAnnualMinCapacityInvestment(r,t,y) = 0;
-TotalTechnologyAnnualActivityUpperLimit(r,t,y) = 99999;
+TotalTechnologyAnnualActivityUpperLimit(r,t,y) = default_max;
 TotalTechnologyAnnualActivityLowerLimit(r,t,y) = 0;
-TotalTechnologyModelPeriodActivityUpperLimit(r,t) = 99999;
+TotalTechnologyModelPeriodActivityUpperLimit(r,t) = default_max;
 TotalTechnologyModelPeriodActivityLowerLimit(r,t) = 0;
 
 *** reserve margin parameters initialization
@@ -49,9 +52,9 @@ REMinProductionTarget(r,y) = 0;
 *** emission parameters initialization
 EmissionsPenalty(r,e,y) = 0;
 AnnualExogenousEmission(r,e,y) = 0;
-AnnualEmissionLimit(r,e,y) = 0;
+AnnualEmissionLimit(r,e,y) = default_max;
 ModelPeriodExogenousEmission(r,e) = 0;
-ModelPeriodEmissionLimit(r,e) = 0;
+ModelPeriodEmissionLimit(r,e) = default_max;
 EmissionActivityRatio(r,t,e,m,y) = 0;
 
 *** storage related parameters initialization

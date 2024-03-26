@@ -11,20 +11,22 @@ set     SEASON / 1 /;
 * the different moments of the day, useful to characterize variable demand and supply (e.g. renewables) between day and night
 set     DAYTYPE / 1 /;
 * collector set for possible permulations of season and daytype
-set     TIMESLICE / 1 /;
+set     TIMESLICE / "ALLYEAR" /;
 * this set is needed for characterizing storage technologies
 set     DAILYTIMEBRACKET / 1 /;
 * what type of emissions exists (we can then associate them to fuels)
-set     EMISSION / CO2 /;
+set     EMISSION / "CO2" /;
 
 * LET's NOW START WITH OUR SUPER SIMPLE ENERGY SISTEM
 
 *Define the technologies of the model. We have three: refineries, oil power plant, and our final appliance (say light bulbs)
-set     TECHNOLOGY   / refineries, oil_power_plant, light_bulbs /;
+set     TECHNOLOGY   / "refineries", "oil_power_plant", "light_bulbs" /;
+
+set power_plants(TECHNOLOGY) / "oil_power_plant" /;
 
 *Define the fuels of the model. We have three: crude oil (primary energy), gasoline (secondary) and electricity (secondary)
 *but note that final demand is also defined as a fuel! So it's actually four...
-set     FUEL    / crude_oil, gasoline, electricity, lighting /;
+set     FUEL    / "crude_oil", "gasoline", "electricity", "lighting" /;
 
 ** NOTE THAT ALL TYPE OF FUELS (i.e. ENERGY FLOWS) ARE DEFINED AS FUELS
 * we can conceptualize divide them as primary, secondary, and final demand. 
@@ -37,7 +39,7 @@ set final_demand(FUEL) / lighting /;
 
 ** what I just described is a modelling convention. Osemosys is flexible enough to allow more complex interactions. 
 ** For example, lighting could be an input for the refineries (you need light for the operators..). 
-** However, the self-use for energy-producting technologies is accounted for in efficiencies, whicn allows to define the flow
+** However, the self-use for energy-producting technologies is usually accounted for in efficiencies, whicn allows to define the flow
 * from primary to final energy in a linear way. 
 
 *** I need to populate the storage set with a dummy or the model will not compile.
@@ -87,31 +89,31 @@ OutputActivityRatio(r,"light_bulbs","lighting",m,y) = 0.2;
 * let's start with the final demands
 * we have only one final demand, lighting
 * we need to define the demand for lighting in each year (let's assume constant, for now)
-AccumulatedAnnualDemand(r,"lighting",y) = 1000;
+AccumulatedAnnualDemand(r,"lighting",y) = 10;
 
 * NB we can also specify a time profile for the demand, but we will do it later
 
 * now, let's define the technologies: each is characterized by costs (capital, fixed and variable), capacity and availability factors
 *** costs (per year)
 *overnight costs of construction
-CapitalCost(r,"refineries",y) = 1000;
-CapitalCost(r,"oil_power_plant",y) = 300;
+CapitalCost(r,"refineries",y) = 100;
+CapitalCost(r,"oil_power_plant",y) = 1000;
 CapitalCost(r,"light_bulbs",y) = 0.001;
 
 ** yearly fixed cost (regardless of activity)
-FixedCost(r,"refineries",y) = 40;
-FixedCost(r,"oil_power_plant",y) = 10;
+FixedCost(r,"refineries",y) = 50;
+FixedCost(r,"oil_power_plant",y) = 30;
 FixedCost(r,"light_bulbs",y) = 0;
 
 ** variable cost (per unit of activity)
 VariableCost(r,"refineries",m,y) = 10;
-VariableCost(r,"oil_power_plant",m,y) = 5;
+VariableCost(r,"oil_power_plant",m,y) = .4;
 VariableCost(r,"light_bulbs",m,y) = 0;
 
 * lifetime of the technologies
 OperationalLife(r,"refineries") = 50;
 OperationalLife(r,"oil_power_plant") = 30;
-OperationalLife(r,"light_bulbs") = 1;
+OperationalLife(r,"light_bulbs") = 2;
 
 * availability factor of the technologies, i.e. max percentage of time they can actually operate over a year
 AvailabilityFactor(r,"refineries",y) = 0.9;
@@ -131,7 +133,7 @@ ReserveMarginTagTechnology(r,"oil_power_plant",y) = 1;
 * to attribute emission to a fuel, it is convenient to create a fictional technology for each primary fuel (and assign an emission coefficient to them)
 * LET'S DO IT: mind that thanks to $onrecursive we can redefine static sets
 
-set TECHNOLOGY /oil_market/;
+set TECHNOLOGY /"oil_market"/;
 
 * this technologies produces crude oil for no inputs and with 100% efficiency
 OutputActivityRatio(r,"oil_market","crude_oil",m,y) = 1;
@@ -140,7 +142,7 @@ OutputActivityRatio(r,"oil_market","crude_oil",m,y) = 1;
 VariableCost(r,"oil_market",m,y) = 50;
 
 * operational life is virtually infinite (more than the time horizon of the model)
-OperationalLife(r,"oil_market") = 100;
+OperationalLife(r,"oil_market") = 1000;
 
 AvailabilityFactor(r,"oil_market",y) = 1;
 
