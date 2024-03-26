@@ -12,8 +12,8 @@ set FUEL /
         SOL 'Solar'
         WND 'Wind' /;
 
-set t_res(TECHNOLOGY) /SPV,WPP/; 
-set f_res(FUEL) /SOL,WND/; 
+set renewable_tech(TECHNOLOGY) /SPV,WPP/; 
+set renewable_fuel(FUEL) /SOL,WND/; 
 
 set power_plants(TECHNOLOGY) / SPV, WPP/;
 set fuel_production_fict(TECHNOLOGY) /SUN, WIN/;
@@ -59,6 +59,3 @@ CapitalCost(r,'WIN',y) = 1200;
 VariableCost(r,'WPP',m,y) = 1e-5;
 FixedCost(r,'WPP',y) = 7;
 
-#ReserveMarginTagTechnology(r,t,y)$res(t) = 1;
-RETagTechnology(r,t,y)$t_res(t) = 1;
-RETagFuel(r,f,y)$f_res(f) = 1;

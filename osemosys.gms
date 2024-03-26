@@ -79,7 +79,7 @@ $setglobal scen "nocoal"
 $endif.scen
 
 $ifthen.scen set cost_res 
-CapitalCost(r,t,y)$t_res(t) = %cost_res%/100 * CapitalCost(r,t,y);
+CapitalCost(r,t,y)$renewable_tech(t) = %cost_res%/100 * CapitalCost(r,t,y);
 $setglobal scen "lowcost%cost_res%"
 $endif.scen
 

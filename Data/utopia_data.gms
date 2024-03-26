@@ -87,6 +87,9 @@ set transport(TECHNOLOGY) / TXD, TXE, TXG /;
 set primary_imports(TECHNOLOGY) / IMPHCO1, IMPOIL1, IMPURN1 /;
 set secondary_imports(TECHNOLOGY) / IMPDSL1, IMPGSL1 /;
 
+set renewable_tech(TECHNOLOGY) /HYDRO/; 
+set renewable_fuel(FUEL) /HYD/; 
+
 set fuel_production(TECHNOLOGY);
 set fuel_production_fict(TECHNOLOGY) /RIV/;
 set secondary_production(TECHNOLOGY) /COAL, NUCLEAR, HYDRO, STOR_HYDRO, DIESEL_GEN, SRE/;
