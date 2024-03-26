@@ -1,6 +1,7 @@
 *
 * OSEMOSYS 2011.07.07 conversion to GAMS by Ken Noble, Noble-Soft Systems - August 2012
 * OSEMOSYS 2017.11.08 update by Thorsten Burandt, Konstantin L�ffler and Karlo Hainsch, TU Berlin (Workgroup for Infrastructure Policy) - October 2017
+* OSEMOSYS 2024.26.03 update by Pietro Andreoni, CMCC
 *
 * Files required are:
 * osemosys.gms (this file)
@@ -19,8 +20,11 @@
 * gams osemosys.gms
 * 4. You should find that you get an optimal value of 29446.861.
 * 5. Some results are created in file SelResults.CSV that you can view in Excel.
-*
-* declarations for sets, parameters, variables
+* OPTIONS
+* --storage=1 to enable storage constraints
+* --mip=1 to solve the problem as a mixed integer linear program. To be paired with appropriate definition of parameter CapacityOfOneTechnologyUnit
+* --scen={base,ren_target,ctax,emicap,nocoal,cost_res} to run the model with different constraints
+* --data={baseenergysystem,utopia,renewables} to run the model with different data
 $eolcom #
 $onmulti
 $onrecurse
