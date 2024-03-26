@@ -25,14 +25,13 @@ $eolcom #
 $onmulti
 $onrecurse
 $if not set scen $setglobal scen base
-$include osemosys_dec.gms
+$if not set data $setglobal data baseenergysystem
+$include "Model/osemosys_dec.gms"
 * specify Model data
-*$include utopia_data.gms
-*$include renewables_data.gms
-$include simplest_energy_system.gms
-$include compute_data.gms
+$include "Data/%data%_data.gms"
+$include "Model/compute_data.gms"
 * define model equations
-$include osemosys_equ.gms
+$include "Model/osemosys_equ.gms"
 
 * some scenario flags
 $ifthen.scen set ren_target
@@ -59,7 +58,7 @@ $endif.scen
 
 $ifthen.scen set cost_res 
 CapitalCost(r,t,y)$t_res(t) = %cost_res%/100 * CapitalCost(r,t,y);
-$setglobal scen "lowcost"
+$setglobal scen "lowcost%cost_res%"
 $endif.scen
 
 * solve the model
@@ -74,6 +73,6 @@ solve osemosys minimizing z using lp;
 $endif.solvermode
 
 * create results in file SelResults.CSV
-$include osemosys_res.gms
-*$include report.gms
-execute_unload 'results_%scen%.gdx';
+$include "Model/osemosys_res.gms"
+$if not %scen%=="base" $include "Model/report.gms"
+execute_unload 'Results/results_SCEN%scen%_DATA%data%.gdx';

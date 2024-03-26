@@ -47,7 +47,7 @@ set STORAGE /dummy/;
 
 *** HERE, I AM INITIALIZING ALL PARAMETERS OF THE MODEL TO DEFAULT VALUES AFTER POPULATING THE SETS:
 * By default, values are initialized as such that the technologies are not active
-$include osemosys_init.gms
+$include "Model/osemosys_init.gms"
 
 * ANYWAY... LET'S START BUILDING THE MODEL
 * the central parameters of the model are InputActivityRatio and OutputActivityRatio. Let's define them. 

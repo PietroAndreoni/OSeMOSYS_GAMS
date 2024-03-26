@@ -19,7 +19,7 @@ parameter rep_co2emiss_share_fen(*,r,f,y) '%';
 parameter rep_cost_wrt_base(*,r) '%';
 
 variable cost_base(r);
-$gdxin results_base.gdx
+$gdxin "Results/results_base.gdx"
 $loaddc cost_base=ModelPeriodCostByRegion
 $gdxin
 
@@ -128,7 +128,7 @@ rep_co2emiss_by_fuel('%scen%',r,f,y) = sum((t,m)$(OutputActivityRatio(r,t,f,m,y)
 rep_cost_wrt_base('%scen%',r) = 100*(ModelPeriodCostByRegion.l(r)/cost_base.l(r)-1);
 
 
-execute_unload 'report_%scen%.gdx',
+execute_unload 'Results/report_%scen%.gdx',
 rep_fen_tot
 rep_pes_tot
 rep_pes_share

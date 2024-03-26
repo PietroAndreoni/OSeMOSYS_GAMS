@@ -96,7 +96,7 @@ set primary_fuel(FUEL) / HCO, OIL, URN, HYD /;
 set secondary_carrier(FUEL) / DSL, GSL, ELC /;
 set final_demand(FUEL) / RH, RL, TX /;
 
-*$include osemosys_init.gms
+*$include "Model/osemosys_init.gms"
 
 *------------------------------------------------------------------------	
 * Parameters - Global

@@ -1,3 +1,4 @@
+$include "Data/utopia_data.gms"
 
 set TECHNOLOGY /
 * new technologies
