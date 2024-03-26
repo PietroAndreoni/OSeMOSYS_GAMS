@@ -8,3 +8,5 @@
 *.lst
 *.lxi
 .Rproj.user
+
+*.Rproj
