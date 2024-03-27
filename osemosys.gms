@@ -28,8 +28,10 @@
 $eolcom #
 $onmulti
 $onrecurse
+$setglobal mip
 $if not set scen $setglobal scen base
 $if not set data $setglobal data baseenergysystem
+$if not set value $setglobal value ""
 $include "Model/osemosys_dec.gms"
 * specify Model data
 $include "Data/%data%_data.gms"
@@ -53,35 +55,18 @@ solve osemosys minimizing z using lp;
 $endif.solvermode
 
 $include "Model/osemosys_res.gms"
-$include "Model/report.gms"
-execute_unload 'Results/results_SCENbase_DATA%data%.gdx';
+*$include "Model/report.gms"
+$if not set storage execute_unload 'Results/results_SCENbase_DATA%data%_STORno.gdx';
+$if set storage execute_unload 'Results/results_SCENbase_DATA%data%_STORyes.gdx';
 
-* some scenario flags
-$ifthen.scen set ren_target
-equation my_RE4_EnergyConstraint(REGION,YEAR);
-my_RE4_EnergyConstraint(r,y)..
-    %ren_target%/100*(sum(f, AccumulatedAnnualDemand(r,f,y) + SpecifiedAnnualDemand(r,f,y))) =l= TotalREProductionAnnual(r,y);
-$setglobal scen "rentarget%ren_target%"
-$endif.scen
-
-$ifthen.scen set ctax 
-EmissionsPenalty(r,'CO2',y) = %ctax%;
-$setglobal scen "ctax%ctax%"
-$endif.scen
-
-$ifthen.scen set emicap 
-AnnualEmissionLimit(r,'CO2',y)$(ord(y) ge 10) = %emicap%;
-$setglobal scen "emicap%emicap%"
-$endif.scen
-
-$ifthen.scen set nocoal 
+$ifthen.scen %scen%=="ctax" 
+EmissionsPenalty(r,'CO2',y) = %value%;
+$elseif.scen %scen%=="emicap" 
+AnnualEmissionLimit(r,'CO2',y)$(ord(y) ge 10) = %value%;
+$elseif.scen %scen%=="nocoal" 
 TotalAnnualMaxCapacity(r,'COAL',y) = .5;
-$setglobal scen "nocoal"
-$endif.scen
-
-$ifthen.scen set cost_res 
-CapitalCost(r,t,y)$renewable_tech(t) = %cost_res%/100 * CapitalCost(r,t,y);
-$setglobal scen "lowcost%cost_res%"
+$elseif.scen %scen%=="cheapres" 
+CapitalCost(r,t,y)$renewable_tech(t) = %value%/100 * CapitalCost(r,t,y);
 $endif.scen
 
 * solve the model with the constraints
@@ -95,7 +80,8 @@ $endif.solvermode
 
 * create results in file SelResults.CSV
 $include "Model/osemosys_res.gms"
-$include "Model/report.gms"
-execute_unload 'Results/results_SCEN%scen%_DATA%data%.gdx';
+*$include "Model/report.gms"
+$if not set storage execute_unload 'Results/results_SCEN%scen%%value%_DATA%data%_STORno.gdx';
+$if set storage execute_unload 'Results/results_SCEN%scen%%value%_DATA%data%_STORyes.gdx';
 
 $endif.notbase

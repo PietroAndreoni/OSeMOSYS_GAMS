@@ -10,3 +10,7 @@
 .Rproj.user
 
 *.Rproj
+
+*./225*/*
+
+.Rhistory
