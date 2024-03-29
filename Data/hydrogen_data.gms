@@ -9,7 +9,6 @@ SET STORAGE / HYDROGEN "HYDROGEN"/;
 
 
 # Characterize ELECTROLIZERS
-OperationalLife(r,'HEL') = 10;
 CapacityFactor(r,'HEL',l,y) = 1;
 AvailabilityFactor(r,'HEL',y) = 0.9;
 InputActivityRatio(r,'HEL','ELC',"1",y) = 1; #IEA convention

@@ -6,7 +6,7 @@ want_storage <- "yes" #do you want to consider storage?
 
 ## plot primary energy, total
 ggplot(Production %>% 
-         filter(scen==scen_select & data==data_select & FUEL %in% primary & storage==storage)) +
+         filter(scen==scen_select & data==data_select & FUEL %in% primary & storage==want_storage)) +
   geom_line(aes(x=YEAR,
                 y=value,
                 color=FUEL,
@@ -14,8 +14,8 @@ ggplot(Production %>%
             linewidth=1.2) +
   xlab("") + ylab("PJ/yr")
 
-ggplot(ProductionSlice %>% 
-         filter(scen==scen_select & data==data_select & FUEL %in% primary & storage==storage) %>%
+ggplot(Production %>% 
+         filter(scen==scen_select & data==data_select & FUEL %in% primary & storage==want_storage) %>%
          group_by(scen,data,YEAR) %>%
          mutate(valuerel=value/sum(value))  ) +
   geom_area(aes(x=YEAR,
@@ -54,7 +54,7 @@ ggplot(ProductionSlice %>%
                 y=value,
                 color=FUEL),
             linewidth=0.8) +
-  xlab("") + ylab("PJ/yr") +
+  xlab("") + ylab("unit") +
   facet_wrap(FUEL~.,scales="free")
 
 ### timeslice for a single day

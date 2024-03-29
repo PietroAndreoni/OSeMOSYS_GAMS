@@ -4,6 +4,7 @@
 * OSEMOSYS 2016.08.01 update by Thorsten Burandt, Konstantin L�ffler and Karlo Hainsch, TU Berlin (Workgroup for Infrastructure Policy) - October 2017
 * OSEMOSYS 2020.04.13 reformatting by Giacomo Marangoni
 * OSEMOSYS 2020.04.15 change yearsplit by Giacomo Marangoni
+* OSEMOSYS 2024.03.27 change storage initial conditions by Pietro Andreoni
 
 * OSEMOSYS 2016.08.01
 * Open Source energy Modeling SYStem
