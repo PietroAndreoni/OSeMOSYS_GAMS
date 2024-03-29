@@ -1,5 +1,5 @@
 #### require results_analysis.R to run 
-select_multiple_scens <- "emicap" #type of policy you want plotted
+select_multiple_scens <- "cheapres" #type of policy you want plotted
 data_select <- "hydrogen"
 scen_select <- "base"
 want_storage <- "yes" #do you want to consider want_storage?
