@@ -46,26 +46,11 @@ ggplot(Emissions %>%
             linewidth=1.2) +
   xlab("") + ylab("Emission [fraction of baseline]")
 
-
 ggplot(Demand %>%
          filter((str_detect(scen,paste(select_multiple_scens,collapse="|") )|scen=="base") & 
                   data==data_select & 
                   storage==want_storage & 
-                  YEAR==2010) %>% 
-         inner_join(hourly_split) %>%
-         filter(yearly_hours <= 8760)) +
-  geom_line(aes(x=yearly_hours,
-                y=value,
-                color=scen),
-            linewidth=1.2) +
-  xlab("") + ylab("MW")
-
-
-ggplot(Demand %>%
-         filter((str_detect(scen,paste(select_multiple_scens,collapse="|") )|scen=="base") & 
-                  data==data_select & 
-                  storage==want_storage & 
-                  YEAR==2010) %>% 
+                  YEAR==2010 & value!=0) %>% 
          inner_join(hourly_split %>%
                       group_by(season) %>%
                       slice(1:24) %>% mutate(hours=row_number()) ) ) +
