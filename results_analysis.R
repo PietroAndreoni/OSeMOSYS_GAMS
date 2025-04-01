@@ -55,7 +55,7 @@ hourly_split <- data.frame(yearly_hours = seq(1,8670)) %>%
                             yearly_hours > 6*30*24 & yearly_hours <= 9*30*24 ~ "S",
                             yearly_hours > 9*30*24 & yearly_hours <= 12*30*24 ~ "I",
                             yearly_hours > 12*30*24 ~ "W") ) %>%
-  inner_join(year_map %>% select(-value))
+  inner_join(year_map %>% select(-value,-storage))
 
 ### load some useful sets for fuels
 primary <- batch_extract("primary_fuel",all_gdx)[[1]]$FUEL  %>% unique()
