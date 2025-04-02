@@ -1,22 +1,14 @@
 #### require results_analysis.R to run 
-select_multiple_scens <- " " #type of policy you want plotted
-data_select <- "hydrogen"
-want_storage <- "no" #do you want to consider want_storage?
+select_multiple_scens <- c("cheapres10","nocoal") #type of policy you want plotted
+data_select <- "renewables"
+want_storage <- "yes" #do you want to consider want_storage?
 
 #################### MULTIPLE scenarios
 ggplot(Production %>% 
-         filter( (str_detect(scen,paste(select_multiple_scens,collapse="|"))|scen=="base") & data==data_select & FUEL %in% primary & storage==want_storage) %>%
-         group_by(YEAR,data,FUEL) %>%
-         mutate(valuediff=(value-value[scen=="base"]) )) +
-  geom_line(aes(x=YEAR,
-                y=valuediff,
-                color=FUEL,
-                linetype=scen),
-            linewidth=1.2) +
-  xlab("") + ylab("PJ/yr")
-
-ggplot(Production %>% 
-         filter( (str_detect(scen,paste(select_multiple_scens,collapse="|"))|scen=="base") & data==data_select & FUEL %in% secondary & storage==want_storage) %>%
+         filter( (str_detect(scen,paste(select_multiple_scens,collapse="|"))|scen=="base") & 
+                   data==data_select & 
+                   FUEL %in% primary & 
+                   storage==want_storage) %>%
          group_by(YEAR,data,FUEL) %>%
          mutate(valuediff=(value-value[scen=="base"]) )) +
   geom_line(aes(x=YEAR,
@@ -25,6 +17,18 @@ ggplot(Production %>%
                 linetype=scen),
             linewidth=1.2) +
   xlab("") + ylab("PJ/yr")
+
+ggplot(Activity %>% 
+         filter( (str_detect(scen,paste(select_multiple_scens,collapse="|"))|scen=="base") & 
+                   data==data_select & 
+                   TECHNOLOGY %in% pp & 
+                   storage==want_storage)) +
+  geom_area(aes(x=YEAR,
+                y=value,
+                fill=TECHNOLOGY),
+            linewidth=1.2, 
+            position="stack", stat="identity") +
+  xlab("") + ylab("PJ/yr") + facet_wrap(scen~.)
 
 ggplot(TotalCost %>% 
          filter( (str_detect(scen,paste(select_multiple_scens,collapse="|"))|scen=="base") & data==data_select & storage==want_storage) %>%
@@ -60,8 +64,8 @@ ggplot(Demand %>%
             linewidth=1.2) +
   xlab("") + ylab("MW") + facet_wrap(season~.,)
 
-techs <- c("SPV")
-ggplot(Activity %>%
+techs <- c("COAL")
+ggplot(RateofActivity %>%
          filter((str_detect(scen,paste(select_multiple_scens,collapse="|") )|scen=="base") & 
                   data==data_select & 
                   TECHNOLOGY %in% techs & 
@@ -77,7 +81,7 @@ ggplot(Activity %>%
             linewidth=1.2) +
   xlab("") + ylab("MW")
 
-ggplot(Activity %>%
+ggplot(RateofActivity %>%
          filter((str_detect(scen,paste(select_multiple_scens,collapse="|"))|scen=="base") & 
                   data==data_select & 
                   TECHNOLOGY %in% techs & 

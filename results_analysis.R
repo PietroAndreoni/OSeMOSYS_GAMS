@@ -22,7 +22,9 @@ osemosys_sanitize <- function(.x) {
 Production <- batch_extract("ProductionAnnual",all_gdx)[[1]] |> setDT() |> osemosys_sanitize() %>% as_tibble()
 Demand <- batch_extract("Demand",all_gdx)[[1]] |> setDT() |> osemosys_sanitize() %>% as_tibble()
 Use <- batch_extract("UseAnnual",all_gdx)[[1]] |> setDT() |> osemosys_sanitize() %>% as_tibble()
-Activity <- batch_extract("RateOfActivity",all_gdx)[[1]] |> setDT() |> osemosys_sanitize() %>% as_tibble()
+
+Activity <- batch_extract("TotalTechnologyAnnualActivity",all_gdx)[[1]] |> setDT() |> osemosys_sanitize() %>% as_tibble()
+RateofActivity <- batch_extract("RateOfActivity",all_gdx)[[1]] |> setDT() |> osemosys_sanitize() %>% as_tibble()
 
 TotalCost <- batch_extract("TotalDiscountedCost",all_gdx)[[1]] |> setDT() |> osemosys_sanitize() %>% as_tibble()
 Emissions <- batch_extract("AnnualEmissions",all_gdx)[[1]] |> setDT() |> osemosys_sanitize() %>% as_tibble()
