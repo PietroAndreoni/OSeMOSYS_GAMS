@@ -2,12 +2,8 @@
 * OSEMOSYS 2011.07.07 conversion to GAMS by Ken Noble, Noble-Soft Systems - August 2012
 * OSEMOSYS 2017.11.08 update by Thorsten Burandt, Konstantin L�ffler and Karlo Hainsch, TU Berlin (Workgroup for Infrastructure Policy) - October 2017
 * OSEMOSYS 2024.26.03 update by Pietro Andreoni, CMCC
+* OSEMOSYS 2024.03.04 update by Pietro Andreoni, CMCC
 *
-* Files required are:
-* osemosys.gms (this file)
-* osemosys_dec.gms
-* utopia_data.txt
-* osemosys_equ.gms
 *
 * To run this GAMS version of OSeMOSYS on your PC:
 * 1. YOU MUST HAVE GAMS VERSION 22.7 OR HIGHER INSTALLED.
@@ -24,7 +20,7 @@
 * --storage=1 to enable storage constraints
 * --mip=1 to solve the problem as a mixed integer linear program. To be paired with appropriate definition of parameter CapacityOfOneTechnologyUnit
 * --scen={base,ren_target,ctax,emicap,nocoal,cost_res} to run the model with different constraints
-* --data={baseenergysystem,utopia,renewables} to run the model with different data
+* --data={baseenergysystem,utopia,renewables,hydrogen,template} to run the model with different data
 $eolcom #
 $onmulti
 $onrecurse
@@ -32,20 +28,21 @@ $onrecurse
 $if not set scen $setglobal scen base
 $if not set data $setglobal data baseenergysystem
 $if not set value $setglobal value ""
+$setglobal storage
 $include "Model/osemosys_dec.gms"
 * specify Model data
 $include "Data/%data%_data.gms"
 * perform data computations when needed
-*$include "Model/compute_data.gms"
+$include "Model/compute_data.gms"
 * define model equations
 $include "Model/osemosys_equ.gms"
-
 
 * some model options
 model osemosys /all/;
 option limrow=0, limcol=0, solprint=on;
 option mip = copt;
 option lp = conopt;
+osemosys.optfile = 1;
 
 * first, solve the model without any constraints
 $ifthen.solvermode set mip
@@ -75,7 +72,7 @@ $ifthen.notbase not %scen%=="base"
 $ifthen.solvermode set mip
 solve osemosys minimizing z using mip;
 $else.solvermode
-solve osemosys minimizing z using lp;
+solve osemosys minimizing z using nlp;
 $endif.solvermode
 
 * create results in file SelResults.CSV

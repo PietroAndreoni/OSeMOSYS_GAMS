@@ -1,0 +1,4 @@
+rtredg=1e-12
+rtbndt=1e-12
+Rtmaxv=1e12
+Lftmsg=100
