@@ -10,8 +10,8 @@ SET STORAGE / "HYDROGEN"/;
 # Characterize ELECTROLIZERS
 CapacityFactor(r,'HEL',l,y) = 1;
 AvailabilityFactor(r,'HEL',y) = 0.9;
-InputActivityRatio(r,'HEL','ELC',"1",y) = 2; #IEA convention
-OutputActivityRatio(r,'HEL','ELC',"2",y) = 0.6; #IEA convention
+InputActivityRatio(r,l,'HEL','ELC',"1",y) = 2; #IEA convention
+OutputActivityRatio(r,l,'HEL','ELC',"2",y) = 0.6; #IEA convention
 TechnologyToStorage(r,"1",'HEL','HYDROGEN') = 1;
 TechnologyFromStorage(r,"2",'HEL','HYDROGEN') = 1;
 

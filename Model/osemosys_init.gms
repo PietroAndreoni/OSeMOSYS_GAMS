@@ -23,8 +23,8 @@ VariableCost(r,t,m,y) = 0;
 FixedCost(r,t,y) = 0;  
 
 *** WHY THIS DOESN'T WORK?
-*InputActivityRatio(r,t,f,m,y) = 0;
-*OutputActivityRatio(r,t,f,m,y) = 0;
+*InputActivityRatio(r,l,t,f,m,y) = 0;
+*OutputActivityRatio(r,l,t,f,m,y) = 0;
 
 **** makes a mip the problem
 CapacityOfOneTechnologyUnit(r,t,y) = 0; #by default, not a MIP

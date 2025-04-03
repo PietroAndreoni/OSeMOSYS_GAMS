@@ -30,9 +30,9 @@ CapacityFactor(r,'SPV','SN',y) = 0;
 CapacityFactor(r,'SPV','WD',y) = 0.1;
 CapacityFactor(r,'SPV','WN',y) = 0;
 
-InputActivityRatio(r,'SPV','SOL',"1",y) = 1; #IEA convention
-OutputActivityRatio(r,'SPV','ELC',"1",y) = 1; 
-OutputActivityRatio(r,'SUN','SOL',"1",y) = 1; 
+InputActivityRatio(r,l,'SPV','SOL',"1",y) = 1; #IEA convention
+OutputActivityRatio(r,l,'SPV','ELC',"1",y) = 1; 
+OutputActivityRatio(r,l,'SUN','SOL',"1",y) = 1; 
 
 CapitalCost(r,'SPV',y) = 1000;
 CapitalCost(r,'SUN',y) = 0; #the sun is free
@@ -50,9 +50,9 @@ CapacityFactor(r,'WPP','SN',y) = 0.15;
 CapacityFactor(r,'WPP','WD',y) = 0.3;
 CapacityFactor(r,'WPP','WN',y) = 0.4;
 
-InputActivityRatio(r,'WPP','WND',"1",y) = 1; #IEA convention
-OutputActivityRatio(r,'WPP','ELC',"1",y) = 1; 
-OutputActivityRatio(r,'WIN','WND',"1",y) = 1; 
+InputActivityRatio(r,l,'WPP','WND',"1",y) = 1; #IEA convention
+OutputActivityRatio(r,l,'WPP','ELC',"1",y) = 1; 
+OutputActivityRatio(r,l,'WIN','WND',"1",y) = 1; 
 
 CapitalCost(r,'WPP',y) = 1200;
 CapitalCost(r,'WIN',y) = 0;

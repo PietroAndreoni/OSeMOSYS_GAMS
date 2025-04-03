@@ -1,7 +1,7 @@
 * OSEMOSYS_RES.GMS - create results in file SelResults.CSV
 *
 * OSEMOSYS 2011.07.07 conversion to GAMS by Ken Noble, Noble-Soft Systems - August 2012
-* OSEMOSYS 2017.11.08 update by Thorsten Burandt, Konstantin Löffler and Karlo Hainsch, TU Berlin (Workgroup for Infrastructure Policy) - October 2017
+* OSEMOSYS 2017.11.08 update by Thorsten Burandt, Konstantin Lï¿½ffler and Karlo Hainsch, TU Berlin (Workgroup for Infrastructure Policy) - October 2017
 *
 FILE ANT /SelResults.CSV/;
 PUT ANT; ANT.ND=6; ANT.PW=400; ANT.PC=5;
@@ -48,19 +48,19 @@ loop(y, put NewCapacity.L(r,t,y));
 );
 put /;
 * Annual Technology Production (by region, technology, fuel, year)
-loop((r,t,f)$(sum((y,m), OutputActivityRatio(r,t,f,m,y)) > 0),
+loop((r,t,f)$(sum((y,m), OutputActivityRatio(r,l,t,f,m,y)) > 0),
 put / "AnnualProductionByTechnology",r.TL,t.TL,f.TL;
 loop(y, put ProductionByTechnologyAnnual.L(r,t,f,y));
 );
 put /;
 * Annual Technology Use (by region, technology, fuel, year)
-loop((r,t,f)$(sum((y,m), InputActivityRatio(r,t,f,m,y)) > 0),
+loop((r,t,f)$(sum((y,m), InputActivityRatio(r,l,t,f,m,y)) > 0),
 put / "AnnualUseByTechnology",r.TL,t.TL,f.TL;
 loop(y, put UseByTechnologyAnnual.L(r,t,f,y));
 );
 put /;
 * Technology Production in each TimeSlice (by region, technology, fuel, timeslice, year)
-loop((r,t,f)$(sum((y,m), OutputActivityRatio(r,t,f,m,y)) > 0),
+loop((r,t,f)$(sum((y,m), OutputActivityRatio(r,l,t,f,m,y)) > 0),
 loop(l,
 put / "ProductionByTechnologyByTimeSlice",r.TL,t.TL,f.TL,l.TL;
 loop(y, put ProductionByTechnology.L(r,l,t,f,y));
@@ -68,7 +68,7 @@ loop(y, put ProductionByTechnology.L(r,l,t,f,y));
 );
 put /;
 * Technology Use in each TimeSlice (by region, technology, fuel, timeslice, year)
-loop((r,t,f)$(sum((y,m), InputActivityRatio(r,t,f,m,y)) > 0),
+loop((r,t,f)$(sum((y,m), InputActivityRatio(r,l,t,f,m,y)) > 0),
 loop(l,
 put / "UseByTechnologyByTimeSlice",r.TL,t.TL,f.TL,l.TL;
 loop(y, put UseByTechnology.L(r,l,t,f,y));

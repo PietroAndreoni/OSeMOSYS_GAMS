@@ -390,7 +390,7 @@ parameter ResidualCapacity(r,t,y) /
 /;
 $if set no_initial_capacity ResidualCapacity(r,t,y) = 0;
 
-parameter InputActivityRatio(r,t,f,m,y) /
+parameter InputActivityRatio(r,l,t,f,m,y) /
   UTOPIA.COAL.HCO.1.(1990*2010)  3.125
   UTOPIA.NUCLEAR.URN.1.(1990*2010)  3.5
   UTOPIA.ROR.HYD.1.(1990*2010)  3.125
@@ -405,7 +405,7 @@ parameter InputActivityRatio(r,t,f,m,y) /
   UTOPIA.TXG.GSL.1.(1990*2010)  1
 /;
 
-parameter OutputActivityRatio(r,t,f,m,y) /
+parameter OutputActivityRatio(r,l,t,f,m,y) /
   UTOPIA.COAL.ELC.1.(1990*2010)  1
   UTOPIA.NUCLEAR.ELC.1.(1990*2010)  1
   UTOPIA.ROR.ELC.1.(1990*2010)  1
@@ -428,8 +428,8 @@ parameter OutputActivityRatio(r,t,f,m,y) /
 /;
 
 # By default, assume for imported secondary fuels the same efficiency of the internal refineries
-InputActivityRatio(r,'IMPDSL1','OIL',m,y)$(not OutputActivityRatio(r,'SRE','DSL',m,y) eq 0) = 1/OutputActivityRatio(r,'SRE','DSL',m,y); 
-InputActivityRatio(r,'IMPGSL1','OIL',m,y)$(not OutputActivityRatio(r,'SRE','GSL',m,y) eq 0) = 1/OutputActivityRatio(r,'SRE','GSL',m,y); 
+InputActivityRatio(r,l,'IMPDSL1','OIL',m,y)$(not OutputActivityRatio(r,l,'SRE','DSL',m,y) eq 0) = 1/OutputActivityRatio(r,l,'SRE','DSL',m,y); 
+InputActivityRatio(r,l,'IMPGSL1','OIL',m,y)$(not OutputActivityRatio(r,l,'SRE','GSL',m,y) eq 0) = 1/OutputActivityRatio(r,l,'SRE','GSL',m,y); 
 
 *------------------------------------------------------------------------	
 * Parameters - Technology costs       

@@ -137,49 +137,49 @@ ResidualCapacity(r,"SRE",y) = 1.55;
 ** ----------------------------------------------------------------
 $elseif.ph %phase%=='popol'
 
-InputActivityRatio(r,'SPV','SUN',"1",y) = 1; #IEA convention
-OutputActivityRatio(r,'SPV','ELC',"1",y) = 1; 
+InputActivityRatio(r,l,'SPV','SUN',"1",y) = 1; #IEA convention
+OutputActivityRatio(r,l,'SPV','ELC',"1",y) = 1; 
 
-InputActivityRatio(r,'WPP','WIN',"1",y) = 1; #IEA convention
-OutputActivityRatio(r,'WPP','ELC',"1",y) = 1; 
+InputActivityRatio(r,l,'WPP','WIN',"1",y) = 1; #IEA convention
+OutputActivityRatio(r,l,'WPP','ELC',"1",y) = 1; 
 
-InputActivityRatio(r,'WTE','WST',"1",y) = 1/0.25; 
-OutputActivityRatio(r,'WTE','ELC',"1",y) = 1;
+InputActivityRatio(r,l,'WTE','WST',"1",y) = 1/0.25; 
+OutputActivityRatio(r,l,'WTE','ELC',"1",y) = 1;
 
-InputActivityRatio(r,'BIO','WBM',"1",y) = 1/0.25;
-OutputActivityRatio(r,'BIO','ELC',"1",y) = 1;
+InputActivityRatio(r,l,'BIO','WBM',"1",y) = 1/0.25;
+OutputActivityRatio(r,l,'BIO','ELC',"1",y) = 1;
 
-InputActivityRatio(r,'GEO','GTH',"1",y) = 1/0.25;
-OutputActivityRatio(r,'GEO','ELC',"1",y) = 1;
+InputActivityRatio(r,l,'GEO','GTH',"1",y) = 1/0.25;
+OutputActivityRatio(r,l,'GEO','ELC',"1",y) = 1;
 
-InputActivityRatio(r,'COAL','HCO',"1",y) = 1/0.45;
-OutputActivityRatio(r,'COAL','ELC',"1",y) = 1;
+InputActivityRatio(r,l,'COAL','HCO',"1",y) = 1/0.45;
+OutputActivityRatio(r,l,'COAL','ELC',"1",y) = 1;
 
-InputActivityRatio(r,'ROR','HYD',"1",y) = 1;
-OutputActivityRatio(r,'ROR','ELC',"1",y) = 1;
+InputActivityRatio(r,l,'ROR','HYD',"1",y) = 1;
+OutputActivityRatio(r,l,'ROR','ELC',"1",y) = 1;
 
 ** open cycle gas turbines
-InputActivityRatio(r,'OCGT','GAS',"1",y) = 1/0.35;
-OutputActivityRatio(r,'OCGT','ELC',"1",y) = 1;
+InputActivityRatio(r,l,'OCGT','GAS',"1",y) = 1/0.35;
+OutputActivityRatio(r,l,'OCGT','ELC',"1",y) = 1;
 
 ** cogeneration power plants produce electricity and heat
-InputActivityRatio(r,'CHP','GAS',"1",y) = 1/0.6;
-OutputActivityRatio(r,'CHP','ELC',"1",y) = 1;
-OutputActivityRatio(r,'CHP','LTE',"1",y) = 1;
+InputActivityRatio(r,l,'CHP','GAS',"1",y) = 1/0.6;
+OutputActivityRatio(r,l,'CHP','ELC',"1",y) = 1;
+OutputActivityRatio(r,l,'CHP','LTE',"1",y) = 1;
 
 ** CCGT can also function as OCGT
-InputActivityRatio(r,'CCGT','GAS',"1",y) = 1/0.6;
-InputActivityRatio(r,'CCGT','GAS',"2",y) = 1/0.3;
-OutputActivityRatio(r,'CCGT','ELC',"1",y) = 1;
-OutputActivityRatio(r,'CCGT','ELC',"2",y) = 1;
+InputActivityRatio(r,l,'CCGT','GAS',"1",y) = 1/0.6;
+InputActivityRatio(r,l,'CCGT','GAS',"2",y) = 1/0.3;
+OutputActivityRatio(r,l,'CCGT','ELC',"1",y) = 1;
+OutputActivityRatio(r,l,'CCGT','ELC',"2",y) = 1;
 
 ** oil power plants
-InputActivityRatio(r,'OIL_GEN','OIL',"1",y) = 1/0.2;
-OutputActivityRatio(r,'OIL_GEN','ELC',"1",y) = 1;
+InputActivityRatio(r,l,'OIL_GEN','OIL',"1",y) = 1/0.2;
+OutputActivityRatio(r,l,'OIL_GEN','ELC',"1",y) = 1;
 
 ** oil refineries
-InputActivityRatio(r,'SRE','OIL',"1",y) = 1.1;
-OutputActivityRatio(r,'SRE','GSL',"1",y) = 0.7;
-OutputActivityRatio(r,'SRE','DSL',"1",y) = 0.3;
+InputActivityRatio(r,l,'SRE','OIL',"1",y) = 1.1;
+OutputActivityRatio(r,l,'SRE','GSL',"1",y) = 0.7;
+OutputActivityRatio(r,l,'SRE','DSL',"1",y) = 0.3;
 
 $endif.ph

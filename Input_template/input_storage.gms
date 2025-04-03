@@ -47,11 +47,11 @@ StorageLevelStart(r,'DAM') = 999;
 $elseif.ph %phase%=='popol'
 
 
-InputActivityRatio(r,'HEL','ELC',"1",y) = 2; #IEA convention
-OutputActivityRatio(r,'HEL','ELC',"2",y) = 0.6; #IEA convention
+InputActivityRatio(r,l,'HEL','ELC',"1",y) = 2; #IEA convention
+OutputActivityRatio(r,l,'HEL','ELC',"2",y) = 0.6; #IEA convention
 
-InputActivityRatio(r,'STOR_HYDRO','ELC',"2",y) = 1; #IEA convention
-OutputActivityRatio(r,'STOR_HYDRO','ELC',"1",y) = 1; #IEA convention
+InputActivityRatio(r,l,'STOR_HYDRO','ELC',"2",y) = 1; #IEA convention
+OutputActivityRatio(r,l,'STOR_HYDRO','ELC',"1",y) = 1; #IEA convention
 
 TechnologyToStorage(r,"1",'HEL','HYDROGEN') = 1;
 TechnologyFromStorage(r,"2",'HEL','HYDROGEN') = 1;

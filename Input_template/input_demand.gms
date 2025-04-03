@@ -150,43 +150,43 @@ $elseif.ph %phase%=='popol'
 #template (efficiencies should be populated correctly)
 
 ** residential heating technologies
-InputActivityRatio(r,"RHE","ELC","1",y) = 1/0.9;
-InputActivityRatio(r,"RHG","GAS","1",y) = 1/0.9;
-InputActivityRatio(r,"RHD","DSL","1",y) = 1;
-OutputActivityRatio(r,"RHE","LTE","1",y) = 1;
-OutputActivityRatio(r,"RHG","LTE","1",y) = 1;
-OutputActivityRatio(r,"RHD","LTE","1",y) = 1;
+InputActivityRatio(r,l,"RHE","ELC","1",y) = 1/0.9;
+InputActivityRatio(r,l,"RHG","GAS","1",y) = 1/0.9;
+InputActivityRatio(r,l,"RHD","DSL","1",y) = 1;
+OutputActivityRatio(r,l,"RHE","LTE","1",y) = 1;
+OutputActivityRatio(r,l,"RHG","LTE","1",y) = 1;
+OutputActivityRatio(r,l,"RHD","LTE","1",y) = 1;
 
 PHS
 
 ** residential lighting and cooling
-InputActivityRatio(r,"RL1","ELC","1",y) = 1;
-InputActivityRatio(r,"RC1","ELC","1",y) = 1;
-OutputActivityRatio(r,"RL1","RL","1",y) = 1;
-OutputActivityRatio(r,"RC1","RC","1",y) = 1;
+InputActivityRatio(r,l,"RL1","ELC","1",y) = 1;
+InputActivityRatio(r,l,"RC1","ELC","1",y) = 1;
+OutputActivityRatio(r,l,"RL1","RL","1",y) = 1;
+OutputActivityRatio(r,l,"RC1","RC","1",y) = 1;
 
 ** personal transport
 # here you want to the energy expenditure of one car in one year travelling 10000 kms
 # 1 car consumes 10000km * l/km * TWh/l 
 * DIESEL:  diesel 10 Kwh/l * 1e-9 TWh/kWh * 10000 km/(car*yr)  / 18 km/l 
-InputActivityRatio(r,"TXD","DSL","1",y) = 5.5555e-6; 
+InputActivityRatio(r,l,"TXD","DSL","1",y) = 5.5555e-6; 
 * ELECTRIC: 10000 km/yr * 0.135 kWh/km * 1e-9 TWh/kWh 
-InputActivityRatio(r,"TXE","ELC","1",y) = 1.35e-6;
+InputActivityRatio(r,l,"TXE","ELC","1",y) = 1.35e-6;
 * GASOLINE: 8.89 Kwh/l gasoline * 10000 * 1e-9 TWh/kWh / 16 km/l
-InputActivityRatio(r,"TXG","GSL","1",y) = 5.5562e-6;
+InputActivityRatio(r,l,"TXG","GSL","1",y) = 5.5562e-6;
 
 # switch from number of cars to thousands of chilometers travelled
-OutputActivityRatio(r,"TXD","TX","1",y) = 10; # average thousands km travelled per year: 10
-OutputActivityRatio(r,"TXE","TX","1",y) = 10;
-OutputActivityRatio(r,"TXG","TX","1",y) = 10;
+OutputActivityRatio(r,l,"TXD","TX","1",y) = 10; # average thousands km travelled per year: 10
+OutputActivityRatio(r,l,"TXE","TX","1",y) = 10;
+OutputActivityRatio(r,l,"TXG","TX","1",y) = 10;
 
 ** industrial heating technologies
-InputActivityRatio(r,"IHE","ELC","1",y) = 1;
-InputActivityRatio(r,"IHG","GAS","1",y) = 1;
-InputActivityRatio(r,"IHC","HCO","1",y) = 1;
+InputActivityRatio(r,l,"IHE","ELC","1",y) = 1;
+InputActivityRatio(r,l,"IHG","GAS","1",y) = 1;
+InputActivityRatio(r,l,"IHC","HCO","1",y) = 1;
 # demand for industrial heating is thermal, so output is 1
-OutputActivityRatio(r,"IHE","IH","1",y) = 1;
-OutputActivityRatio(r,"IHG","IH","1",y) = 1;
-OutputActivityRatio(r,"IHC","IH","1",y) = 1;
+OutputActivityRatio(r,l,"IHE","IH","1",y) = 1;
+OutputActivityRatio(r,l,"IHG","IH","1",y) = 1;
+OutputActivityRatio(r,l,"IHC","IH","1",y) = 1;
 
 $endif.ph

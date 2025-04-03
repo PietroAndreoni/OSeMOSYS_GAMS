@@ -57,8 +57,8 @@ $include "Model/osemosys_init.gms"
 
 * ANYWAY... LET'S START BUILDING THE MODEL
 * the central parameters of the model are InputActivityRatio and OutputActivityRatio. Let's define them. 
-* InputActivityRatio(r,t,f,m,y);
-* OutputActivityRatio(r,t,f,m,y);
+* InputActivityRatio(r,l,t,f,m,y);
+* OutputActivityRatio(r,l,t,f,m,y);
 * THESE PARAMETERS SERVE TWO FUNCTIONS:
 * (1) they define the efficiency of the technologies
 * (2) they define the flows of energy in the system (i.e. the TYPE of FUEL(S) that is produced and consumed by each technology)
@@ -69,24 +69,24 @@ $include "Model/osemosys_init.gms"
 
 * let's start with the refineries.
 * here, we are saying that one unit of activity of refineries (e.g. one barrel of crude oil processed) requires one unit of crude oil
-InputActivityRatio(r,"refineries","crude_oil",m,y) = 1;
+InputActivityRatio(r,l,"refineries","crude_oil",m,y) = 1;
 * and that one unit of activity of refineries produces 0.9 units of gasoline
-OutputActivityRatio(r,"refineries","gasoline",m,y) = 0.9;
+OutputActivityRatio(r,l,"refineries","gasoline",m,y) = 0.9;
 * therefore, the overall efficiency of the refineries is 90%
 
 * now, the oil power plant
 * here, we are saying that one unit of activity of the oil power plant (e.g. one MWh of electricity produced) requires 3 units of gasoline
 * this is equivalent of assuming an efficiency of 33.3%
-InputActivityRatio(r,"oil_power_plant","gasoline",m,y) = 3;
+InputActivityRatio(r,l,"oil_power_plant","gasoline",m,y) = 3;
 * and that one MWh of electricity produced by the power plant produced 0.95 MWh of electricity (due to grid losses)
-OutputActivityRatio(r,"oil_power_plant","electricity",m,y) = 0.95;
+OutputActivityRatio(r,l,"oil_power_plant","electricity",m,y) = 0.95;
 * as you can imagine, the total efficiency of the oil power plant in producing electricity is 31.7% (i.e. 0.95/3)
 
 * finally, the light bulbs
 * here, we are saying that one unit of activity of the light bulbs (e.g. one MWh of electricity consumed) requires 1 unit of electricity    
-InputActivityRatio(r,"light_bulbs","electricity",m,y) = 1;
+InputActivityRatio(r,l,"light_bulbs","electricity",m,y) = 1;
 * and that one unit of activity of the light bulbs produces 0.2 unit of lighting (80% is wasted as heat)
-OutputActivityRatio(r,"light_bulbs","lighting",m,y) = 0.2;
+OutputActivityRatio(r,l,"light_bulbs","lighting",m,y) = 0.2;
 * NB this introduces the concept of useful energy, a deeper concept than final energy (final energy is the energy that reaches the end user, useful energy is the energy that is actually used for the intended purpose)
 
 *** WE NOW BUILT THE SKELETON (i.e. THE NODES AND CONNECTIONS) OF THE MODEL
@@ -142,7 +142,7 @@ ReserveMarginTagTechnology(r,"oil_power_plant",y) = 1;
 set TECHNOLOGY /"oil_market"/;
 
 * this technologies produces crude oil for no inputs and with 100% efficiency
-OutputActivityRatio(r,"oil_market","crude_oil",m,y) = 1;
+OutputActivityRatio(r,l,"oil_market","crude_oil",m,y) = 1;
 
 * there are no fixed costs but a variable cost that identifies the price of the crude oil
 VariableCost(r,"oil_market",m,y) = 50;
