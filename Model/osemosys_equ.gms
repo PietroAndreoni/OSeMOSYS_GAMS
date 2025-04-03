@@ -61,13 +61,7 @@ EQ_SpecifiedDemand1(r,l,f,y)$(SpecifiedAnnualDemand(r,f,y) gt 0)..
 * Calculates cumulative new capacity installed over the time horizon
 equation CAa1_TotalNewCapacity(REGION,TECHNOLOGY,YEAR);
 CAa1_TotalNewCapacity(r,t,y)..
-    AccumulatedNewCapacity(r,t,y) =e= 
-$ifthen.solvermode set mip
-    sum(yy$((y.val-yy.val < OperationalLife(r,t)) AND (y.val-yy.val >= 0)), NewCapacity(r,t,yy))
-$else.solvermode 
-    AccumulatedNewCapacity(r,t,y-1) * (1 - ContinousDepreciation(r,t)) + NewCapacity(r,t,y)
-$endif.solvermode
-    ;
+    AccumulatedNewCapacity(r,t,y) =e= sum(yy$((y.val-yy.val < OperationalLife(r,t)) AND (y.val-yy.val >= 0)), NewCapacity(r,t,yy));
 
 equation CAa2_TotalAnnualCapacity(REGION,TECHNOLOGY,YEAR);
 CAa2_TotalAnnualCapacity(r,t,y)..
@@ -113,12 +107,12 @@ CAb1_PlannedMaintenance(r,t,y)..
 * Ensures that demand for each commodity is met in each TimeSlice.
 
 equation EBa1_RateOfFuelProduction1(REGION,TIMESLICE,FUEL,TECHNOLOGY,MODE_OF_OPERATION,YEAR);
-EBa1_RateOfFuelProduction1(r,l,f,t,m,y)$(OutputActivityRatio(r,t,f,m,y) <> 0)..
-    RateOfActivity(r,l,t,m,y)*OutputActivityRatio(r,t,f,m,y) =e= RateOfProductionByTechnologyByMode(r,l,t,m,f,y);
+EBa1_RateOfFuelProduction1(r,l,f,t,m,y)$(OutputActivityRatio(r,l,t,f,m,y) <> 0)..
+    RateOfActivity(r,l,t,m,y)*OutputActivityRatio(r,l,t,f,m,y) =e= RateOfProductionByTechnologyByMode(r,l,t,m,f,y);
 
 equation EBa2_RateOfFuelProduction2(REGION,TIMESLICE,FUEL,TECHNOLOGY,YEAR);
 EBa2_RateOfFuelProduction2(r,l,f,t,y)..
-    sum(m$(OutputActivityRatio(r,t,f,m,y) <> 0), RateOfProductionByTechnologyByMode(r,l,t,m,f,y)) =e=
+    sum(m$(OutputActivityRatio(r,l,t,f,m,y) <> 0), RateOfProductionByTechnologyByMode(r,l,t,m,f,y)) =e=
         RateOfProductionByTechnology(r,l,t,f,y);
 
 equation EBa3_RateOfFuelProduction3(REGION,TIMESLICE,FUEL,YEAR);
@@ -127,12 +121,12 @@ EBa3_RateOfFuelProduction3(r,l,f,y)..
         RateOfProduction(r,l,f,y);
 
 equation EBa4_RateOfFuelUse1(REGION,TIMESLICE,FUEL,TECHNOLOGY,MODE_OF_OPERATION,YEAR);
-EBa4_RateOfFuelUse1(r,l,f,t,m,y)$(InputActivityRatio(r,t,f,m,y) <> 0)..
-    RateOfActivity(r,l,t,m,y)*InputActivityRatio(r,t,f,m,y) =e= RateOfUseByTechnologyByMode(r,l,t,m,f,y);
+EBa4_RateOfFuelUse1(r,l,f,t,m,y)$(InputActivityRatio(r,l,t,f,m,y) <> 0)..
+    RateOfActivity(r,l,t,m,y)*InputActivityRatio(r,l,t,f,m,y) =e= RateOfUseByTechnologyByMode(r,l,t,m,f,y);
 
 equation EBa5_RateOfFuelUse2(REGION,TIMESLICE,FUEL,TECHNOLOGY,YEAR);
 EBa5_RateOfFuelUse2(r,l,f,t,y)..
-    sum(m$(InputActivityRatio(r,t,f,m,y) <> 0), RateOfUseByTechnologyByMode(r,l,t,m,f,y)) =e=
+    sum(m$(InputActivityRatio(r,l,t,f,m,y) <> 0), RateOfUseByTechnologyByMode(r,l,t,m,f,y)) =e=
         RateOfUseByTechnology(r,l,t,f,y);
 
 equation EBa6_RateOfFuelUse3(REGION,TIMESLICE,FUEL,YEAR);

@@ -226,13 +226,13 @@ parameter ContinousDepreciation(REGION,TECHNOLOGY);
 * modelling period.
 parameter ResidualCapacity(REGION,TECHNOLOGY,YEAR);
 
-* InputActivityRatio[r,t,f,m,y]: Rate of use of a commodity by a
+* InputActivityRatio[r,l,t,f,m,y]: Rate of use of a commodity by a
 * technology, as a ratio of the rate of activity.
-parameter InputActivityRatio(REGION,TECHNOLOGY,FUEL,MODE_OF_OPERATION,YEAR);
+parameter InputActivityRatio(REGION,TIMESLICE,TECHNOLOGY,FUEL,MODE_OF_OPERATION,YEAR);
 
-* OutputActivityRatio[r,t,f,m,y]: Rate of commodity output from a
+* OutputActivityRatio[r,l,t,f,m,y]: Rate of commodity output from a
 * technology, as a ratio of the rate of activity.
-parameter OutputActivityRatio(REGION,TECHNOLOGY,FUEL,MODE_OF_OPERATION,YEAR);
+parameter OutputActivityRatio(REGION,TIMESLICE,TECHNOLOGY,FUEL,MODE_OF_OPERATION,YEAR);
 
 
 *------------------------------------------------------------------------	

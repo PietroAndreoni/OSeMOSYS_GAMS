@@ -20,8 +20,7 @@ set     TECHNOLOGY      /
 set    FUEL            /
         DSL 'Diesel'
         ELC 'Electricity'
-        GSL 'Gasoline'
-        THE 'Thearmal energy' /; 
+        GSL 'Gasoline' /; 
 
 set power_plants(TECHNOLOGY)   / COAL, OCGT, CCGT, CHP, ROR, OIL_GEN, BIO, GEO, WTE, SRE, SPV, WPP /;
 set fuel_transformation(TECHNOLOGY) / SRE /;
@@ -166,7 +165,7 @@ OutputActivityRatio(r,'OCGT','ELC',"1",y) = 1;
 ** cogeneration power plants produce electricity and heat
 InputActivityRatio(r,'CHP','GAS',"1",y) = 1/0.6;
 OutputActivityRatio(r,'CHP','ELC',"1",y) = 1;
-OutputActivityRatio(r,'CHP','THE',"1",y) = 1;
+OutputActivityRatio(r,'CHP','LTE',"1",y) = 1;
 
 ** CCGT can also function as OCGT
 InputActivityRatio(r,'CCGT','GAS',"1",y) = 1/0.6;
