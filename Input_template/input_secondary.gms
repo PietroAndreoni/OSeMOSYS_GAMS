@@ -1,7 +1,7 @@
 $set phase %1
 
 ** ----------------------------------------------------------------
-$ifthen.ph %phase%=='data'
+$ifthen.ph %phase%=='sets'
 
 set     TECHNOLOGY      /
         COAL 'Coal power plants'
