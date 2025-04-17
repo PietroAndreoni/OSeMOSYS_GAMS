@@ -26,7 +26,7 @@ $onmulti
 $onrecurse
 *$setglobal mip
 $if not set scen $setglobal scen base
-$if not set data $setglobal data baseenergysystem
+$if not set data $setglobal data template
 $if not set value $setglobal value ""
 $setglobal storage
 $include "Model/osemosys_dec.gms"
@@ -51,8 +51,6 @@ $else.solvermode
 solve osemosys minimizing z using lp;
 $endif.solvermode
 
-$include "Model/osemosys_res.gms"
-*$include "Model/report.gms"
 $if not set storage execute_unload 'Results/results_SCENbase_DATA%data%_STORno.gdx';
 $if set storage execute_unload 'Results/results_SCENbase_DATA%data%_STORyes.gdx';
 
@@ -75,9 +73,6 @@ $else.solvermode
 solve osemosys minimizing z using nlp;
 $endif.solvermode
 
-* create results in file SelResults.CSV
-$include "Model/osemosys_res.gms"
-*$include "Model/report.gms"
 $if not set storage execute_unload 'Results/results_SCEN%scen%%value%_DATA%data%_STORno.gdx';
 $if set storage execute_unload 'Results/results_SCEN%scen%%value%_DATA%data%_STORyes.gdx';
 
