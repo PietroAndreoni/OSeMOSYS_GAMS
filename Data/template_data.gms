@@ -1,11 +1,12 @@
 ** configuration options
 $setglobal storage 1
+$setglobal yearstart 2025
+$setglobal yearend 2026
 
 *------------------------------------------------------------------------	
 * Sets       
 *------------------------------------------------------------------------
-
-set     YEAR    / 2025*2075 /;
+set     YEAR    / %yearstart%*%yearend% /;
 set     EMISSION        / CO2 /;
 set     MODE_OF_OPERATION       / 1, 2 /;
 set     REGION  / ITALY /;

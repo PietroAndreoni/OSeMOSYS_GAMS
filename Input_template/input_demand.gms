@@ -40,30 +40,30 @@ SpecifiedAnnualDemand(r,"IH","2025") = 0.21 * fen_2025;
 AccumulatedAnnualDemand(r,"TX","2025") = 0.33 * fen_2025;
 
 parameter SpecifiedDemandProfile(r,f,l,y) /
-  ITALY.RH.ID.(2025*2075)  .12
-  ITALY.RH.IN.(2025*2075)  .06
-  ITALY.RH.SD.(2025*2075)  0
-  ITALY.RH.SN.(2025*2075)  0
-  ITALY.RH.WD.(2025*2075)  .5467
-  ITALY.RH.WN.(2025*2075)  .2733
-  ITALY.RL.ID.(2025*2075)  .15
-  ITALY.RL.IN.(2025*2075)  .05
-  ITALY.RL.SD.(2025*2075)  .15
-  ITALY.RL.SN.(2025*2075)  .05
-  ITALY.RL.WD.(2025*2075)  .5
-  ITALY.RL.WN.(2025*2075)  .1
-  ITALY.RC.ID.(2025*2075)  .3
-  ITALY.RC.IN.(2025*2075)  0
-  ITALY.RC.SD.(2025*2075)  .5
-  ITALY.RC.SN.(2025*2075)  .2
-  ITALY.RC.WD.(2025*2075)  0
-  ITALY.RC.WN.(2025*2075)  0
-  ITALY.IH.ID.(2025*2075)  .3
-  ITALY.IH.IN.(2025*2075)  .033
-  ITALY.IH.SD.(2025*2075)  .3
-  ITALY.IH.SN.(2025*2075)  .033
-  ITALY.IH.WD.(2025*2075)  .3
-  ITALY.IH.WN.(2025*2075)  .034
+  ITALY.RH.ID.(%yearstart%*%yearend% )  .12
+  ITALY.RH.IN.(%yearstart%*%yearend% )  .06
+  ITALY.RH.SD.(%yearstart%*%yearend% )  0
+  ITALY.RH.SN.(%yearstart%*%yearend% )  0
+  ITALY.RH.WD.(%yearstart%*%yearend% )  .5467
+  ITALY.RH.WN.(%yearstart%*%yearend% )  .2733
+  ITALY.RL.ID.(%yearstart%*%yearend% )  .15
+  ITALY.RL.IN.(%yearstart%*%yearend% )  .05
+  ITALY.RL.SD.(%yearstart%*%yearend% )  .15
+  ITALY.RL.SN.(%yearstart%*%yearend% )  .05
+  ITALY.RL.WD.(%yearstart%*%yearend% )  .5
+  ITALY.RL.WN.(%yearstart%*%yearend% )  .1
+  ITALY.RC.ID.(%yearstart%*%yearend% )  .3
+  ITALY.RC.IN.(%yearstart%*%yearend% )  0
+  ITALY.RC.SD.(%yearstart%*%yearend% )  .5
+  ITALY.RC.SN.(%yearstart%*%yearend% )  .2
+  ITALY.RC.WD.(%yearstart%*%yearend% )  0
+  ITALY.RC.WN.(%yearstart%*%yearend% )  0
+  ITALY.IH.ID.(%yearstart%*%yearend% )  .3
+  ITALY.IH.IN.(%yearstart%*%yearend% )  .033
+  ITALY.IH.SD.(%yearstart%*%yearend% )  .3
+  ITALY.IH.SN.(%yearstart%*%yearend% )  .033
+  ITALY.IH.WD.(%yearstart%*%yearend% )  .3
+  ITALY.IH.WN.(%yearstart%*%yearend% )  .034
 /;
 
 
