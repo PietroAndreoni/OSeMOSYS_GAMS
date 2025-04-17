@@ -33,11 +33,11 @@ fen_2025 = 1400; #TWh
 
 ** italy: residential and commercial -> 26% + 12.5% OF FEN.
 ** assume: 50% heating, 20% cooling, 30% lighting
-SpecifiedAnnualDemand(r,"RH","2025") = 0.38 * 0.5 * fen_2025;
-SpecifiedAnnualDemand(r,"RC","2025") = 0.38 * 0.2 * fen_2025;
-SpecifiedAnnualDemand(r,"RL","2025") = 0.38 * 0.3 * fen_2025;
-SpecifiedAnnualDemand(r,"IH","2025") = 0.21 * fen_2025;
-AccumulatedAnnualDemand(r,"TX","2025") = 0.33 * fen_2025;
+SpecifiedAnnualDemand(r,"RH",y) = 0.38 * 0.5 * fen_2025;
+SpecifiedAnnualDemand(r,"RC",y) = 0.38 * 0.2 * fen_2025;
+SpecifiedAnnualDemand(r,"RL",y) = 0.38 * 0.3 * fen_2025;
+SpecifiedAnnualDemand(r,"IH",y) = 0.21 * fen_2025;
+AccumulatedAnnualDemand(r,"TX",y) = 0.33 * fen_2025;
 
 parameter SpecifiedDemandProfile(r,f,l,y) /
   ITALY.RH.ID.(%yearstart%*%yearend% )  .12
@@ -163,13 +163,19 @@ OutputActivityRatio(r,"RL1","RL","1",y) = 1;
 OutputActivityRatio(r,"RC1","RC","1",y) = 1;
 
 ** personal transport
-InputActivityRatio(r,"TXD","DSL","1",y) = 1; 
-InputActivityRatio(r,"TXE","ELC","1",y) = 1;
-InputActivityRatio(r,"TXG","GSL","1",y) = 1;
-# here you want to switch from energy to km travelled: km/TWh
-OutputActivityRatio(r,"TXD","TX","1",y) = 1;
-OutputActivityRatio(r,"TXE","TX","1",y) = 1;
-OutputActivityRatio(r,"TXG","TX","1",y) = 1;
+# here you want to the energy expenditure of one car in one year travelling 10000 kms
+# 1 car consumes 10000km * l/km * TWh/l 
+* DIESEL:  diesel 10 Kwh/l * 1e-9 TWh/kWh * 10000 km/(car*yr)  / 18 km/l 
+InputActivityRatio(r,"TXD","DSL","1",y) = 5.5555e-6; 
+* ELECTRIC: 10000 km/yr * 0.135 kWh/km * 1e-9 TWh/kWh 
+InputActivityRatio(r,"TXE","ELC","1",y) = 1.35e-6;
+* GASOLINE: 8.89 Kwh/l gasoline * 10000 * 1e-9 TWh/kWh / 16 km/l
+InputActivityRatio(r,"TXG","GSL","1",y) = 5.5562e-6;
+
+# switch from number of cars to thousands of chilometers travelled
+OutputActivityRatio(r,"TXD","TX","1",y) = 10; # average thousands km travelled per year: 10
+OutputActivityRatio(r,"TXE","TX","1",y) = 10;
+OutputActivityRatio(r,"TXG","TX","1",y) = 10;
 
 ** industrial heating technologies
 InputActivityRatio(r,"IHE","ELC","1",y) = 1;
