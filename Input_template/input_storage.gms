@@ -31,9 +31,9 @@ CapacityFactor(r,'STOR_HYDRO',"WN",y) = 0.5;
 CapitalCost(r,'STOR_HYDRO',y) = 1000;
 VariableCost(r,'STOR_HYDRO',m,y) = 0;
 FixedCost(r,'STOR_HYDRO',y) = 0;
-OperationalLife(r,'STOR_HYDRO') = 10;
-ResidualCapacity(r,"STOR_HYDRO",y) = 7.25;
-
+OperationalLife(r,'STOR_HYDRO') = 60;
+ResidualCapacity(r,'STOR_HYDRO',y) = 7.25;
+TotalAnnualMaxCapacityInvestment(r,'STOR_HYDRO',y) = 0;
 CapitalCostStorage(r,'HYDROGEN',y) = 100;
 ResidualStorageCapacity(r,'HYDROGEN',y) = 0;
 StorageLevelStart(r,'HYDROGEN') = 0;

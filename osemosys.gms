@@ -26,14 +26,14 @@ $onmulti
 $onrecurse
 *$setglobal mip
 $if not set scen $setglobal scen base
-$if not set data $setglobal data baseenergysystem
+$if not set data $setglobal data template
 $if not set value $setglobal value ""
 $setglobal storage
 $include "Model/osemosys_dec.gms"
 * specify Model data
 $include "Data/%data%_data.gms"
 * perform data computations when needed
-$include "Model/compute_data.gms"
+$if not %data%=="template" $include "Model/compute_data.gms"
 * define model equations
 $include "Model/osemosys_equ.gms"
 

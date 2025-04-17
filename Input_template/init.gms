@@ -8,12 +8,12 @@ $ifthen.ph %phase%=='pre'
 *------------------------------------------------------------------------
 
 parameter YearSplit(l,y) /
-  ID.(2025*2075)  .3333
-  IN.(2025*2075)  .1667
-  SD.(2025*2075)  .1667
-  SN.(2025*2075)  .0833
-  WD.(2025*2075)  .1667
-  WN.(2025*2075)  .0833
+  ID.(%yearstart%*%yearend%)  .3333
+  IN.(%yearstart%*%yearend%)  .1667
+  SD.(%yearstart%*%yearend%)  .1667
+  SN.(%yearstart%*%yearend%)  .0833
+  WD.(%yearstart%*%yearend%)  .1667
+  WN.(%yearstart%*%yearend%)  .0833
 /;
 
 DiscountRate(r) = 0.05;
@@ -143,6 +143,8 @@ ContinousDepreciation(r,t)$(OperationalLife(r,t) = 0) = 1;
 ContinousDepreciation(r,t)$(ContinousDepreciation(r,t) < 0) = 0; 
 
 ContinousDepreciation(r,t)$(ContinousDepreciation(r,t) > 1) = 1; 
+
+ContinousDepreciation(r,t) = 0;
 
 *** define the renewable technology and fuel tags
 RETagTechnology(r,t,y)$renewable_tech(t) = 1;
