@@ -66,6 +66,81 @@ parameter SpecifiedDemandProfile(r,f,l,y) /
   ITALY.IH.WN.(2025*2075)  .034
 /;
 
+
+*------------------------------------------------------------------------	
+* Parameters - technologies       
+*------------------------------------------------------------------------
+
+##### END-USE TECHNOLOGIES
+** residential heating technologies
+CapitalCost(r,"RHE",y) = 1000;
+VariableCost(r,"RHE",m,y) = 1e-5;
+FixedCost(r,"RHE",y) = 0.1;
+OperationalLife(r,"RHE") = 10;
+
+CapitalCost(r,"RHG",y) = 1000;
+VariableCost(r,"RHG",m,y) = 1e-5;
+FixedCost(r,"RHG",y) = 0.1;
+OperationalLife(r,"RHG") = 10;
+
+CapitalCost(r,"RHD",y) = 1000;
+VariableCost(r,"RHD",m,y) = 1e-5;
+FixedCost(r,"RHD",y) = 0.1;
+OperationalLife(r,"RHD") = 10;
+
+** cogeneration RHCC is a ficticious technology that transforms 1:1 THE fuel in in RH and has no costs
+CapitalCost(r,"RHCC",y) = 0;
+VariableCost(r,"RHCC",m,y) = 0;
+FixedCost(r,"RHCC",y) = 0;
+OperationalLife(r,"RHCC") = 999;
+ResidualCapacity(r,"RHCC",y) = TotalAnnualMaxCapacity(r,"RHCC",y);
+
+** residential lighting and cooling
+CapitalCost(r,"RL1",y) = 1000;
+VariableCost(r,"RL1",m,y) = 1e-5;
+FixedCost(r,"RL1",y) = 0.1;
+OperationalLife(r,"RL1") = 10;
+
+CapitalCost(r,"RC1",y) = 1000;
+VariableCost(r,"RC1",m,y) = 1e-5;
+FixedCost(r,"RC1",y) = 0.1;
+OperationalLife(r,"RC1") = 10;
+
+** personal transport
+* assuming 25k for a diesel car, 22k for a gasoline car, and 35k for an electric car
+* fixed costs (insurance, taxes, etc.) are 2k for diesel and gasoline, and 1.5k for electric
+CapitalCost(r,"TXD",y) = 25e-6;
+VariableCost(r,"TXD",m,y) = 0;
+FixedCost(r,"TXD",y) = 2e-6;
+OperationalLife(r,"TXD") = 12;
+
+CapitalCost(r,"TXE",y) = 35e-6;
+VariableCost(r,"TXE",m,y) = 0;
+FixedCost(r,"TXE",y) = 1.5e-6;
+OperationalLife(r,"TXE") = 12;
+
+CapitalCost(r,"TXG",y) = 22e-6;
+VariableCost(r,"TXG",m,y) = 0;
+FixedCost(r,"TXG",y) = 2e-6;
+OperationalLife(r,"TXG") = 12;
+
+** industrial heating technologies
+CapitalCost(r,"IHE",y) = 1000;
+VariableCost(r,"IHE",m,y) = 1e-5;
+FixedCost(r,"IHE",y) = 0.1;
+OperationalLife(r,"IHE") = 10;
+
+CapitalCost(r,"IHG",y) = 1000;
+VariableCost(r,"IHG",m,y) = 1e-5;
+FixedCost(r,"IHG",y) = 0.1;
+OperationalLife(r,"IHG") = 10;
+
+CapitalCost(r,"IHC",y) = 1000;
+VariableCost(r,"IHC",m,y) = 1e-5;
+FixedCost(r,"IHC",y) = 0.1;
+OperationalLife(r,"IHC") = 10;
+
+*------------------------------------------------------------------------
 $elseif.ph %phase%=='popol'
 
 #template (efficiencies should be populated correctly)
@@ -85,6 +160,7 @@ InputActivityRatio(r,"RL1","ELC","1",y) = 1;
 InputActivityRatio(r,"RC1","ELC","1",y) = 1;
 OutputActivityRatio(r,"RHCC","RH","1",y) = 1;
 OutputActivityRatio(r,"RL1","RL","1",y) = 1;
+OutputActivityRatio(r,"RC1","RC","1",y) = 1;
 
 ** personal transport
 InputActivityRatio(r,"TXD","DSL","1",y) = 1; 
