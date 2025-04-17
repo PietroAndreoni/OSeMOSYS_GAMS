@@ -34,6 +34,7 @@ FixedCost(r,'IMPDSL1',y) = 0;
 OperationalLife(r,'IMPDSL1') = 999;
 AvailabilityFactor(r,'IMPDSL1',y) = 1;
 EmissionActivityRatio(r,'IMPDSL1','CO2','1',y) = 0.075;
+ResidualCapacity(r,"IMPDSL1",y) = 999;
 
 CapitalCost(r,'IMPGSL1',y) = 0;
 VariableCost(r,'IMPGSL1',m,y) = 70; # cost of gasoline in $/MWh
@@ -41,6 +42,7 @@ FixedCost(r,'IMPGSL1',y) = 0;
 OperationalLife(r,'IMPGSL1') = 999;
 AvailabilityFactor(r,'IMPGSL1',y) = 1;
 EmissionActivityRatio(r,'IMPGSL1','CO2','1',y) = 0.075;
+ResidualCapacity(r,"IMPGSL1",y) = 999;
 
 CapitalCost(r,'IMPHCO1',y) = 0;
 VariableCost(r,'IMPHCO1',m,y) = 30; # cost of coal in $/MWh
@@ -48,6 +50,7 @@ FixedCost(r,'IMPHCO1',y) = 0;
 OperationalLife(r,'IMPHCO1') = 999;
 AvailabilityFactor(r,'IMPHCO1',y) = 1;
 EmissionActivityRatio(r,'IMPHCO1','CO2','1',y) = 0.089;
+ResidualCapacity(r,"IMPHCO1",y) = 999;
 
 CapitalCost(r,'IMPOIL1',y) = 0;
 VariableCost(r,'IMPOIL1',m,y) = 60; # cost of oil in $/MWh
@@ -55,6 +58,7 @@ FixedCost(r,'IMPOIL1',y) = 0;
 OperationalLife(r,'IMPOIL1') = 999;
 AvailabilityFactor(r,'IMPOIL1',y) = 1;
 EmissionActivityRatio(r,'IMPOIL1','CO2','1',y) = 0.075;
+ResidualCapacity(r,"IMPOIL1",y) = 999;
 
 CapitalCost(r,'IMPGAS1',y) = 0;
 VariableCost(r,'IMPGAS1',m,y) = 40; # cost of gas in $/MWh
@@ -62,6 +66,7 @@ FixedCost(r,'IMPGAS1',y) = 0;
 OperationalLife(r,'IMPGAS1') = 999;
 AvailabilityFactor(r,'IMPGAS1',y) = 1;
 EmissionActivityRatio(r,'IMPGAS1','CO2','1',y) = 0.055;
+ResidualCapacity(r,"IMPGAS1",y) = 999;
 
 CapitalCost(r,'IMPBIO1',y) = 0;
 VariableCost(r,'IMPBIO1',m,y) = 20; # cost of biomass in $/MWh  
@@ -69,6 +74,7 @@ FixedCost(r,'IMPBIO1',y) = 0;
 OperationalLife(r,'IMPBIO1') = 999;
 AvailabilityFactor(r,'IMPBIO1',y) = 1;
 EmissionActivityRatio(r,'IMPBIO1','CO2','1',y) = 0;
+ResidualCapacity(r,"IMPBIO1",y) = 999;
 
 ** ----------------------------------------------------------------
 $elseif.ph %phase%=="popol"
