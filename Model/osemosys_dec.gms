@@ -31,6 +31,13 @@ alias (y,yy,yyy,YEAR);
 set TECHNOLOGY;
 alias (t,TECHNOLOGY)
 
+* FORCEACTIVITY / t: It includes any technology that is forced to
+* operate at a certain level of activity. It is used to model
+* technologies that are not allowed to be curtailed, such as
+* nuclear power plants or renewable energy sources. It is also useful to
+set FORCEACTIVITY(TECHNOLOGY);
+alias (fa,FORCEACTIVITY)
+
 * TIMESLICE / l: It represents the time split of each modelled year,
 * therefore the time resolution of the model. Common to several energy
 * systems modelling tools (incl. MESSAGE / MARKAL / TIMES), the annual

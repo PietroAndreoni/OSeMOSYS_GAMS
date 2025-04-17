@@ -75,6 +75,14 @@ equation CAa4_Constraint_Capacity(REGION,TIMESLICE,TECHNOLOGY,YEAR);
 CAa4_Constraint_Capacity(r,l,t,y)..
     RateOfTotalActivity(r,l,t,y) =l= TotalCapacityAnnual(r,t,y) * CapacityFactor(r,t,l,y) * CapacityToActivityUnit(r,t);
 
+* this constraint is used to characterize technologies that HAVE TO be utilized at full capacity. 
+* Capacity can either be set directly as ResidualCapacity or by specifying a proper demand for a fuel produced by said technology
+* this is useful to define "end-use" technologies that are not used to produce a fuel but to provide a service
+* e.g. km^2 of housing
+equation CAa5_Constraint_Capacity(REGION,TIMESLICE,TECHNOLOGY,YEAR);
+CAa5_Constraint_Capacity(r,l,t,y)$(FORCEACTIVITY(t))..
+    RateOfTotalActivity(r,l,t,y) =e= TotalCapacityAnnual(r,t,y) * CapacityFactor(r,t,l,y) * CapacityToActivityUnit(r,t);
+
 
 * NOTE: OSeMOSYS uses Mixed Integer Programming to solve models that
 * define CapacityOfTechnologyUnit. Using this parameter is likely to
@@ -95,7 +103,7 @@ $endif.solvermode
 * meet the average annual demand.
 
 equation CAb1_PlannedMaintenance(REGION,TECHNOLOGY,YEAR);
-CAb1_PlannedMaintenance(r,t,y)..
+CAb1_PlannedMaintenance(r,t,y)$(not FORCEACTIVITY(t))..
     sum(l, RateOfTotalActivity(r,l,t,y)*YearSplit(l,y)) =l= sum(l,TotalCapacityAnnual(r,t,y)*CapacityFactor(r,t,l,y)*YearSplit(l,y))*AvailabilityFactor(r,t,y)*CapacityToActivityUnit(r,t);
 
 
