@@ -27,8 +27,8 @@ set    FUEL            /
 *        HTE 'Thermal energy, high temperature [TWh]' 
 *        IH 'Demand for steel [ton steel]'
 # NON ENERGY FUELS
-        RH 'Demand for residential housing [thousands km^2]'
-        CH 'Demand for commercial space [thousands km^2]'
+        RES 'Demand for residential housing [km^2]'
+        COM 'Demand for commercial space [km^2]'
         TX 'Demand for personal transport [thousands km]' /;
 
 **------------------------------------------------------------------------	
@@ -36,44 +36,14 @@ $elseif.ph %phase%=='data'
 
 ##### FINAL DEMAND
 
-scalar fen_2025;
-fen_2025 = 1400; #TWh
-
-** italy: residential and commercial -> 26% + 12.5% OF FEN.
-** assume: 50% heating, 20% cooling, 30% lighting
-SpecifiedAnnualDemand(r,"RH",y) = 0.38 * 0.5 * fen_2025;
-SpecifiedAnnualDemand(r,"RC",y) = 0.38 * 0.2 * fen_2025;
-SpecifiedAnnualDemand(r,"RL",y) = 0.38 * 0.3 * fen_2025;
-SpecifiedAnnualDemand(r,"IH",y) = 0.21 * fen_2025;
 ** 40.8 million cars * 10000 km/yr = 408 billion km/yr
 AccumulatedAnnualDemand(r,"TX",y) = 4.08e8;
 
-parameter SpecifiedDemandProfile(r,f,l,y) /
-  ITALY.RH.ID.(2025*2075)  .12
-  ITALY.RH.IN.(2025*2075)  .06
-  ITALY.RH.SD.(2025*2075)  0
-  ITALY.RH.SN.(2025*2075)  0
-  ITALY.RH.WD.(2025*2075)  .5467
-  ITALY.RH.WN.(2025*2075)  .2733
-  ITALY.RL.ID.(2025*2075)  .15
-  ITALY.RL.IN.(2025*2075)  .05
-  ITALY.RL.SD.(2025*2075)  .15
-  ITALY.RL.SN.(2025*2075)  .05
-  ITALY.RL.WD.(2025*2075)  .5
-  ITALY.RL.WN.(2025*2075)  .1
-  ITALY.RC.ID.(2025*2075)  .3
-  ITALY.RC.IN.(2025*2075)  0
-  ITALY.RC.SD.(2025*2075)  .5
-  ITALY.RC.SN.(2025*2075)  .2
-  ITALY.RC.WD.(2025*2075)  0
-  ITALY.RC.WN.(2025*2075)  0
-  ITALY.IH.ID.(2025*2075)  .3
-  ITALY.IH.IN.(2025*2075)  .033
-  ITALY.IH.SD.(2025*2075)  .3
-  ITALY.IH.SN.(2025*2075)  .033
-  ITALY.IH.WD.(2025*2075)  .3
-  ITALY.IH.WN.(2025*2075)  .034
-/;
+** 43 m^2/person * 55 million people (source https://entranze.enerdata.net/)
+AccumulatedAnnualDemand(r,"RH",y) = 43*55;
+
+** 7 m^2/person * 55 million people (source https://entranze.enerdata.net/)
+AccumulatedAnnualDemand(r,"CH",y) = 7*55;
 
 ##### END-USE TECHNOLOGIES
 ** residential heating technologies
@@ -91,13 +61,6 @@ CapitalCost(r,"RHD",y) = 1000;
 VariableCost(r,"RHD",m,y) = 1e-5;
 FixedCost(r,"RHD",y) = 0.1;
 OperationalLife(r,"RHD") = 10;
-
-** cogeneration RHCC is a ficticious technology that transforms 1:1 THE fuel in in RH and has no costs
-CapitalCost(r,"RHCC",y) = 0;
-VariableCost(r,"RHCC",m,y) = 0;
-FixedCost(r,"RHCC",y) = 0;
-OperationalLife(r,"RHCC") = 999;
-ResidualCapacity(r,"RHCC",y) = TotalAnnualMaxCapacity(r,"RHCC",y);
 
 ** residential lighting and cooling
 CapitalCost(r,"RL1",y) = 1000;
@@ -149,21 +112,30 @@ $elseif.ph %phase%=='popol'
 
 #template (efficiencies should be populated correctly)
 
-** residential heating technologies
+** low heat heating and cooling technologies
 InputActivityRatio(r,l,"RHE","ELC","1",y) = 1/0.9;
 InputActivityRatio(r,l,"RHG","GAS","1",y) = 1/0.9;
 InputActivityRatio(r,l,"RHD","DSL","1",y) = 1;
+InputActivityRatio(r,l,"RC1","ELC","1",y) = 1;
+
 OutputActivityRatio(r,l,"RHE","LTE","1",y) = 1;
+OutputActivityRatio(r,l,"RHE","CTE","2",y) = 1;
 OutputActivityRatio(r,l,"RHG","LTE","1",y) = 1;
 OutputActivityRatio(r,l,"RHD","LTE","1",y) = 1;
-
-PHS
-
-** residential lighting and cooling
-InputActivityRatio(r,l,"RL1","ELC","1",y) = 1;
-InputActivityRatio(r,l,"RC1","ELC","1",y) = 1;
-OutputActivityRatio(r,l,"RL1","RL","1",y) = 1;
 OutputActivityRatio(r,l,"RC1","RC","1",y) = 1;
+
+** lighting technologies
+InputActivityRatio(r,l,"RL1","ELC","1",y) = 1;
+OutputActivityRatio(r,l,"RL1","LTG","1",y) = 1;
+
+** residential space 
+OutputActivityRatio(r,"WD","PHS","LTG","1",y) = 1;
+OutputActivityRatio(r,"WN","PHS","LTG","1",y) = 1;
+OutputActivityRatio(r,"WD","PHS","LTG","1",y) = 1;
+
+
+OutputActivityRatio(r,l,"PHS","RES","1",y) = 1;
+OutputActivityRatio(r,l,"CHS","COM","1",y) = 1;
 
 ** personal transport
 # here you want to the energy expenditure of one car in one year travelling 10000 kms
