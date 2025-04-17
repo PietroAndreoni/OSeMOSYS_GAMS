@@ -21,7 +21,7 @@ set    FUEL            /
         DSL 'Diesel'
         ELC 'Electricity'
         GSL 'Gasoline'
-        THE 'Thearmal energy' /; 
+        THE 'Thermal energy' /; 
 
 set power_plants(TECHNOLOGY)   / COAL, OCGT, CCGT, CHP, ROR, OIL_GEN, BIO, GEO, WTE, SRE, SPV, WPP /;
 set fuel_transformation(TECHNOLOGY) / SRE /;

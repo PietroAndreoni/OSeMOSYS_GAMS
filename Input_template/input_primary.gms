@@ -10,6 +10,11 @@ set     TECHNOLOGY      /
         IMPOIL1 'Crude oil imports'
         IMPGAS1 'Natural gas imports'
         IMPBIO1 'Biomass supply'
+        VIR_SUN 'Virtual sun technology'
+        VIR_WIN 'Virtual wind technology'
+        VIR_GTH 'Virtual geothermal source'
+        VIR_HYD 'Virtual hydro technology (ror)'
+        PRODWST 'Waste production'
 /;
 
 set     FUEL    /
@@ -76,7 +81,49 @@ AvailabilityFactor(r,'IMPBIO1',y) = 1;
 EmissionActivityRatio(r,'IMPBIO1','CO2','1',y) = 0;
 ResidualCapacity(r,"IMPBIO1",y) = 999;
 
+
+CapitalCost(r,'VIR_SUN',y) = 0;
+VariableCost(r,'VIR_SUN',m,y) = 0; 
+FixedCost(r,'VIR_SUN',y) = 0;
+OperationalLife(r,'VIR_SUN') = 999;
+AvailabilityFactor(r,'VIR_SUN',y) = 1;
+ResidualCapacity(r,"VIR_SUN",y) = 999;
+
+CapitalCost(r,'VIR_GTH',y) = 0;
+VariableCost(r,'VIR_GTH',m,y) = 0; 
+FixedCost(r,'VIR_GTH',y) = 0;
+OperationalLife(r,'VIR_GTH') = 999;
+AvailabilityFactor(r,'VIR_GTH',y) = 1;
+ResidualCapacity(r,"VIR_GTH",y) = 999;
+
+CapitalCost(r,'VIR_WIN',y) = 0;
+VariableCost(r,'VIR_WIN',m,y) = 0; 
+FixedCost(r,'VIR_WIN',y) = 0;
+OperationalLife(r,'VIR_WIN') = 999;
+AvailabilityFactor(r,'VIR_WIN',y) = 1;
+ResidualCapacity(r,"VIR_WIN",y) = 999;
+
+CapitalCost(r,'VIR_HYD',y) = 0;
+VariableCost(r,'VIR_HYD',m,y) = 0; 
+FixedCost(r,'VIR_HYD',y) = 0;
+OperationalLife(r,'VIR_HYD') = 999;
+AvailabilityFactor(r,'VIR_HYD',y) = 1;
+ResidualCapacity(r,"VIR_HYD",y) = 999;
+
 ** ----------------------------------------------------------------
 $elseif.ph %phase%=="popol"
+
+OutputActivityRatio(r,'VIR_SUN','SUN',"1",y) = 1;
+OutputActivityRatio(r,'VIR_WIN','WIN',"1",y) = 1;
+OutputActivityRatio(r,'VIR_GTH','GTH',"1",y) = 1;
+OutputActivityRatio(r,'VIR_HYD','HYD',"1",y) = 1;
+
+OutputActivityRatio(r,'PRODWST','WST',"1",y) = 1;
+OutputActivityRatio(r,'IMPBIO1','WBM',"1",y) = 1;
+OutputActivityRatio(r,'IMPHCO1','HCO',"1",y) = 1;
+OutputActivityRatio(r,'IMPGAS1','GAS',"1",y) = 1;
+OutputActivityRatio(r,'IMPDSL1','DSL',"1",y) = 1;
+OutputActivityRatio(r,'IMPGSL1','GSL',"1",y) = 1;
+
 
 $endif.ph
